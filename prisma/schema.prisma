@@ -1,0 +1,209 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// User (Teacher)
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  name          String?
+  password      String   // Hashed password
+  avatar        String?
+  
+  // PIN lock settings
+  pinCode       String?  // Hashed PIN code (e.g., 4 or 6 digits)
+  lockSettings  Boolean  @default(false) // Whether settings/params are locked by PIN
+  lockScoring   Boolean  @default(false) // Whether adding/deducting score is locked by PIN
+  
+  classes       Class[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// 班级
+model Class {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  logo        String?  // URL or path to class logo
+  teacherId   String?
+  teacher     User?    @relation(fields: [teacherId], references: [id], onDelete: SetNull)
+  students  Student[]
+  groups    Group[]
+  groupArchives GroupArchive[]
+  rules     Rule[]
+  products  Product[]
+  levelConfigs LevelConfig[]
+  
+  // 班级配置参数 (可由老师在后台调整)
+  dailyScoreLimit  Int    @default(20)
+  reviveCost       Int    @default(10)
+  reviveBaseHealth Int    @default(30)
+  levelThresholds  String @default("5,10,15,20,30,40,50,60,75,90") // 逗号分隔的每级所需累计经验值
+  
+  // Custom categories for scoring rules, stored as a JSON string
+  ruleCategories   String @default("[\"基础学习\",\"学习进步\",\"纪律习惯\",\"劳动集体\",\"好人好事\",\"学习违纪\",\"纪律违纪\",\"集体公德\"]")
+
+  decayGraceDays   Int    @default(2) // 多少天不加分开始衰减
+  decayHealthPerDay Int   @default(50) // 衰减期每天扣除多少健康值
+  reviveCooldownHours Int @default(24) // 复活冷却时间(小时)
+  maxRevivesPerSemester Int @default(3) // 每学期最大复活次数
+  isFrozen         Boolean @default(false) // 是否冻结宠物（冻结后不饿死不扣健康值）
+  petResetCost     Int    @default(20) // 重置宠物消耗的成长值
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 小组档案 (方案)
+model GroupArchive {
+  id        String   @id @default(cuid())
+  name      String
+  classId   String
+  class     Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+  groups    Group[]
+  isActive  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 小组
+model Group {
+  id        String   @id @default(cuid())
+  name      String
+  classId   String
+  class     Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+  archiveId String?
+  archive   GroupArchive? @relation(fields: [archiveId], references: [id], onDelete: Cascade)
+  students  Student[]
+  score     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 学生
+model Student {
+  id        String   @id @default(cuid())
+  studentNo String?  // 学号
+  name      String
+  classId   String
+  class     Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+  groups    Group[]
+  pet       Pet?
+  score     Int      @default(0) // 当前可用成长值 (Current available score)
+  totalScore Int     @default(0) // 历史总累计成长值 (Total accumulated score for store coin calculation)
+  coins     Int      @default(0) // 宠物币 (Pet coins for store)
+  level     Int      @default(1)
+  penaltyEndDate DateTime? // 如果因为重新领养受到惩罚，记录惩罚结束时间
+  badges    Badge[]
+  records   Record[]
+  exchanges Exchange[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 宠物
+model Pet {
+  id         String   @id @default(cuid())
+  name       String
+  image      String
+  student    Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentId  String   @unique
+  level      Int      @default(0)
+  experience Int      @default(0)
+  health     Int      @default(100)
+  isDead     Boolean  @default(false)
+  reviveCount Int     @default(0)
+  lastReviveAt DateTime?
+  lastScoreAt DateTime @default(now())
+  lastDecayAt DateTime?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// 评分规则
+model Rule {
+  id        String   @id @default(cuid())
+  classId   String
+  class     Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+  name      String
+  category  String
+  score     Int
+  limit     Int?     // 分值上限
+  validPeriod String? // 生效周期 (e.g., 'daily', 'weekly', 'monthly')
+  icon      String?
+  records   Record[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 评价记录
+model Record {
+  id          String   @id @default(cuid())
+  studentId   String
+  student     Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  ruleId      String?
+  rule        Rule?    @relation(fields: [ruleId], references: [id], onDelete: SetNull)
+  scoreChange Int
+  teacherId   String
+  createdAt   DateTime @default(now())
+}
+
+// 商品
+model Product {
+  id          String   @id @default(cuid())
+  classId     String
+  class       Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  price       Int
+  category    String
+  icon        String
+  stock       Int      @default(-1)
+  exchanges   Exchange[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// 兑换记录
+model Exchange {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+// 徽章
+model Badge {
+  id          String   @id @default(cuid())
+  studentId   String
+  student     Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  name        String
+  description String
+  image       String
+  earnedAt    DateTime @default(now())
+}
+
+// 等级配置
+model LevelConfig {
+  id        String   @id @default(cuid())
+  classId   String
+  class     Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+  level     Int
+  experience Int
+  badge     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([classId, level])
+}
