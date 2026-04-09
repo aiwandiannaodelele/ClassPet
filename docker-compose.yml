@@ -1,0 +1,19 @@
+services:
+  classpet:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: classpet-app
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=file:/app/prisma/data/dev.db
+      - NEXTAUTH_SECRET=your-very-secret-key-change-me
+      - NEXT_PUBLIC_BASE_URL=http://localhost:3000
+    volumes:
+      # 将 SQLite 数据库持久化到宿主机
+      - ./prisma/data:/app/prisma/data
+    restart: always
+
+volumes:
+  prisma_data:
