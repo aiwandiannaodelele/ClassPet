@@ -30,6 +30,14 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# database
+prisma/dev.db
+prisma/dev.db-journal
+
+# VIP files
+VIP/
+*.vip
+
 # env files (can opt-in for committing if needed)
 .env*
 
