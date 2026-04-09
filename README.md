@@ -1,7 +1,8 @@
-# 🐾 ClassPet
 <p align="center">
   <img src="https://raw.githubusercontent.com/aiwandiannaodelele/ClassPet/refs/heads/main/public/logo.png" alt="ClassPet Logo" width="128">
 </p>
+
+<h1 align="center">ClassPet</h1>
 
 <p align="center">
 A gamified classroom management system built with Next.js 15 and Prisma.<br>
