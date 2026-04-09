@@ -72,5 +72,4 @@ Any modified version used publicly or hosted online must be open-sourced under t
 
 **Note**: This project only supports **Chinese language** at the moment.
 
-**Developed by**: aiwandiannaodelele / Gong Yifan
-**Version**: v1.0.0
+**Developed by**: aiwandiannaodelele (龚奕帆) / Gong Yifan
