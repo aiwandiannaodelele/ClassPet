@@ -40,29 +40,41 @@ Students adopt and raise virtual pets, while teachers adjust points based on dai
 - **UI**: Tailwind CSS + shadcn/ui
 - **Animations**: Framer Motion + Canvas Confetti
 
-## 🚀 Getting Started
-Install dependencies:
-```bash
-npm install
-```
+## 🚀 Production Deployment (PM2)
 
-Create `.env` file:
+### 1. Environment Setup
+Ensure your server has Node.js (v20+) and PM2 installed.
+
+### 2. Configure Environment Variables
+Create a `.env` file in the root directory:
 ```env
 DATABASE_URL="file:./dev.db"
-AUTH_SECRET="your-random-secret-key"
+NEXTAUTH_SECRET="your-random-secret-key"
+NEXTAUTH_URL="http://your-server-ip:port"
+AUTH_TRUST_HOST=true
 ```
 
-Push database schema:
+### 3. Installation & Build
 ```bash
+# Install dependencies
+npm install
+
+# Push database schema
 npx prisma db push
+
+# Build for production
+npm run build
 ```
 
-Start dev server:
+### 4. Start with PM2
 ```bash
-npm run dev
-```
+# Start and name the process
+pm2 start npm --name "classpet" -- start
 
-Open http://localhost:3000
+# Save for auto-restart on reboot
+pm2 save
+pm2 startup
+```
 
 ## 📄 License
 This project is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
