@@ -90,6 +90,16 @@ export async function PUT(
         decayGraceDays, decayHealthPerDay, reviveCooldownHours, maxRevivesPerSemester,
         isFrozen, petResetCost
       } = body.data;
+
+      // 安全校验：防止超大数值导致数据库崩溃 (INT 限制约 21亿)
+      const safeDailyScoreLimit = Math.min(1000000, Number(dailyScoreLimit || 0));
+      const safeReviveCost = Math.min(1000000, Number(reviveCost || 0));
+      const safeReviveBaseHealth = Math.min(100, Number(reviveBaseHealth || 0));
+      const safeDecayGraceDays = Math.min(365, Number(decayGraceDays || 0));
+      const safeDecayHealthPerDay = Math.min(100, Number(decayHealthPerDay || 0));
+      const safeReviveCooldownHours = Math.min(8760, Number(reviveCooldownHours || 0));
+      const safeMaxRevivesPerSemester = Math.min(100, Number(maxRevivesPerSemester || 0));
+      const safePetResetCost = Math.min(1000000, Number(petResetCost || 0));
       
       const updatedClass = await prisma.class.update({
         where: { id: classId },
@@ -97,17 +107,17 @@ export async function PUT(
           name,
           description,
           logo,
-          dailyScoreLimit,
-          reviveCost,
-          reviveBaseHealth,
+          dailyScoreLimit: safeDailyScoreLimit,
+          reviveCost: safeReviveCost,
+          reviveBaseHealth: safeReviveBaseHealth,
           levelThresholds,
           ruleCategories,
-          decayGraceDays,
-          decayHealthPerDay,
-          reviveCooldownHours,
-          maxRevivesPerSemester,
+          decayGraceDays: safeDecayGraceDays,
+          decayHealthPerDay: safeDecayHealthPerDay,
+          reviveCooldownHours: safeReviveCooldownHours,
+          maxRevivesPerSemester: safeMaxRevivesPerSemester,
           isFrozen,
-          petResetCost
+          petResetCost: safePetResetCost
         }
       });
 

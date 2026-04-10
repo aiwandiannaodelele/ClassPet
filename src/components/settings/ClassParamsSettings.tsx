@@ -272,11 +272,15 @@ export function ClassParamsSettings({ classId, showOnly }: ClassParamsSettingsPr
                   type="number" 
                   className="w-32" 
                   value={settings.dailyScoreLimit}
-                  onChange={(e) => handleSettingChange('dailyScoreLimit', Number(e.target.value))}
+                  onChange={(e) => {
+                    const val = Number(e.target.value);
+                    handleSettingChange('dailyScoreLimit', val > 1000000 ? 1000000 : val);
+                  }}
+                  max={1000000}
                 />
                 <span className="text-sm text-slate-500">分 / 天 (默认: 20)</span>
               </div>
-              <p className="text-xs text-muted-foreground">限制每个学生每天通过喂食能获得的最高成长值，防止刷分。</p>
+              <p className="text-xs text-muted-foreground">限制每个学生每天通过喂食能获得的最高成长值，建议不超过 1,000,000 以确保系统稳定。</p>
             </div>
 
             <div className="grid gap-2 pt-4 border-t">
