@@ -9,11 +9,9 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
-import { 
-  Plus, Loader2, History, ShoppingBag, ChevronLeft, 
-  Search, Coins, Calendar, User, LayoutGrid, Check
-} from "lucide-react";
+import { Plus, Loader2, History, ShoppingBag, ChevronLeft, Search, Coins, Calendar, User, LayoutGrid, Check } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { zhCN } from "date-fns/locale";
@@ -68,6 +66,7 @@ const productCategories = [
 ];
 
 export function StoreDialog({ open, onOpenChange, classId }: StoreDialogProps) {
+  const router = useRouter();
   const [storeTab, setStoreTab] = useState("products");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [products, setProducts] = useState<Product[]>([]);
