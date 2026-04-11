@@ -85,5 +85,14 @@ export const authOptions: NextAuthConfig = {
   pages: {
     signIn: "/login",
   },
-  secret: process.env.NEXTAUTH_SECRET || "fallback_secret_for_dev_classpet_123",
+  secret: (() => {
+    if (!process.env.NEXTAUTH_SECRET) {
+      if (process.env.NODE_ENV === "production") {
+        throw new Error("NEXTAUTH_SECRET environment variable is required in production");
+      }
+      console.warn("⚠️ Using fallback secret for development. Set NEXTAUTH_SECRET in production!");
+      return "fallback_secret_for_dev_classpet_123";
+    }
+    return process.env.NEXTAUTH_SECRET;
+  })(),
 };
