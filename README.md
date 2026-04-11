@@ -10,11 +10,24 @@ Adopt virtual pets, score student performance, and make teaching fun.
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/license-AGPL--3.0-orange?style=flat-square" alt="License">
-  <img src="https://img.shields.io/badge/version-v1.0.0-blue?style=flat-square" alt="Version">
-  <img src="https://img.shields.io/badge/Next.js-15-black?style=flat-square" alt="Next.js">
-  <img src="https://img.shields.io/badge/Prisma-ORM-2D3748?style=flat-square" alt="Prisma">
-  <img src="https://img.shields.io/badge/Tailwind%20CSS-06B6D4?style=flat-square" alt="Tailwind CSS">
+  <a href="https://github.com/aiwandiannaodelele/ClassPicker/blob/master/LICENSE">
+    <img src="https://img.shields.io/github/license/aiwandiannaodelele/ClassPicker" alt="License">
+  </a>
+  <a href="https://nextjs.org/">
+    <img src="https://img.shields.io/badge/Next.js-000000?logo=nextdotjs&logoColor=white" alt="Next.js">
+  </a>
+  <a href="https://react.dev/">
+    <img src="https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black" alt="React">
+  </a>
+  <a href="https://ui.shadcn.com/">
+    <img src="https://img.shields.io/badge/shadcn/ui-black?logo=shadcnui&logoColor=white" alt="shadcn/ui">
+  </a>
+  <a href="https://www.prisma.io/">
+  <img src="https://img.shields.io/badge/Prisma-2D3748?logo=prisma&logoColor=white" alt="Prisma">
+  </a>
+  <a href="https://tailwindcss.com/">
+    <img src="https://img.shields.io/badge/Tailwind%20CSS-06B6D4?logo=tailwindcss&logoColor=white" alt="Tailwind CSS">
+  </a>
 </p>
 
 ---
