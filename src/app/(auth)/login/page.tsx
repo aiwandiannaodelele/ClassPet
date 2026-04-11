@@ -52,7 +52,7 @@ export default function LoginPage() {
             </div>
           </div>
           <CardTitle className="text-2xl font-bold">欢迎回来</CardTitle>
-          <CardDescription>登录班级宠物园</CardDescription>
+          <CardDescription>登录萌宠班级屋</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">

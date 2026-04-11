@@ -110,7 +110,7 @@ export default function HomePage() {
             <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-amber-50 shadow-inner border border-amber-200/50 overflow-hidden">
               <img src="/logo.png" alt="ClassPet Logo" className="w-full h-full object-cover" />
             </div>
-            <h3 className="text-2xl font-bold text-slate-800 mb-3">欢迎来到班级宠物园</h3>
+            <h3 className="text-2xl font-bold text-slate-800 mb-3">欢迎来到萌宠班级屋</h3>
             <p className="text-slate-500 mb-2">
               当前还没有创建任何班级。
             </p>

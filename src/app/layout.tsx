@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "班级宠物园 ClassPet",
-  description: "班级宠物园 - 让每个学生都与宠物一起快乐成长",
+  title: "萌宠班级屋 ClassPet",
+  description: "萌宠班级屋 - 让每个学生都与宠物一起快乐成长",
   icons: {
     icon: '/logo.png',
     apple: '/logo.png',

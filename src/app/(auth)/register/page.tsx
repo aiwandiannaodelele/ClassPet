@@ -62,7 +62,7 @@ export default function RegisterPage() {
             </div>
           </div>
           <CardTitle className="text-2xl font-bold">创建教师账号</CardTitle>
-          <CardDescription>加入班级宠物园，开启趣味管理</CardDescription>
+          <CardDescription>加入萌宠班级屋，开启趣味管理</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
