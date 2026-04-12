@@ -47,7 +47,7 @@ Students adopt and raise virtual pets, while teachers adjust points based on dai
 - 📅 **Holiday Freeze** — Automatically pauses pet status decay during vacations
 
 ## 🛠️ Tech Stack
-- **Framework**: Next.js 15 (App Router)
+- **Framework**: Next.js 16 (App Router)
 - **Database**: SQLite / PostgreSQL + Prisma ORM
 - **Auth**: Auth.js (NextAuth v5 Beta)
 - **UI**: Tailwind CSS + shadcn/ui
