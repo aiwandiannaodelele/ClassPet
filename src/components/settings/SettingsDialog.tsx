@@ -2,6 +2,7 @@
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { RuleManagement } from "@/components/rule/RuleManagement";
 import { GrowthSettings } from "./GrowthSettings";
 import { DataManagement } from "./DataManagement";
@@ -29,8 +30,8 @@ export function SettingsDialog({ open, onOpenChange, classId }: SettingsDialogPr
           </DialogTitle>
         </DialogHeader>
 
-        <Tabs defaultValue={classId ? "students" : "help"} className="flex-1">
-          <TabsList className="grid w-full grid-cols-9 mb-4">
+        <Tabs defaultValue={classId ? "students" : "help"} className="flex-1 flex flex-col overflow-hidden">
+          <TabsList className="grid w-full grid-cols-9 mb-4 flex-shrink-0">
             <TabsTrigger value="students" disabled={!classId}>学生名单</TabsTrigger>
             <TabsTrigger value="classParams" disabled={!classId}>班级参数</TabsTrigger>
             <TabsTrigger value="survivalParams" disabled={!classId}>生存惩罚</TabsTrigger>
@@ -42,40 +43,56 @@ export function SettingsDialog({ open, onOpenChange, classId }: SettingsDialogPr
             <TabsTrigger value="about">关于软件</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="students" className="h-[65vh] overflow-y-auto px-1">
-            {classId ? <ClassManagement classId={classId} /> : null}
+          <TabsContent value="students" className="flex-1 overflow-hidden m-0">
+            <ScrollArea className="h-full px-1">
+              {classId ? <ClassManagement classId={classId} /> : null}
+            </ScrollArea>
           </TabsContent>
 
-          <TabsContent value="classParams" className="h-[65vh] overflow-y-auto px-1">
-            {classId ? <ClassParamsSettings classId={classId} showOnly="basic" /> : null}
+          <TabsContent value="classParams" className="flex-1 overflow-hidden m-0">
+            <ScrollArea className="h-full px-1">
+              {classId ? <ClassParamsSettings classId={classId} showOnly="basic" /> : null}
+            </ScrollArea>
           </TabsContent>
 
-          <TabsContent value="survivalParams" className="h-[65vh] overflow-y-auto px-1">
-            {classId ? <ClassParamsSettings classId={classId} showOnly="survival" /> : null}
+          <TabsContent value="survivalParams" className="flex-1 overflow-hidden m-0">
+            <ScrollArea className="h-full px-1">
+              {classId ? <ClassParamsSettings classId={classId} showOnly="survival" /> : null}
+            </ScrollArea>
           </TabsContent>
 
-          <TabsContent value="rules" className="h-[65vh] overflow-y-auto px-1">
+          <TabsContent value="rules" className="flex-1 overflow-hidden m-0">
             {classId ? <RuleManagement classId={classId} /> : null}
           </TabsContent>
 
-          <TabsContent value="growth" className="h-[65vh] overflow-y-auto px-1">
-            {classId ? <GrowthSettings classId={classId} /> : null}
+          <TabsContent value="growth" className="flex-1 overflow-hidden m-0">
+            <ScrollArea className="h-full px-1">
+              {classId ? <GrowthSettings classId={classId} /> : null}
+            </ScrollArea>
           </TabsContent>
 
-          <TabsContent value="data" className="h-[65vh] overflow-y-auto px-1">
-            {classId ? <DataManagement classId={classId} /> : null}
+          <TabsContent value="data" className="flex-1 overflow-hidden m-0">
+            <ScrollArea className="h-full px-1">
+              {classId ? <DataManagement classId={classId} /> : null}
+            </ScrollArea>
           </TabsContent>
 
-          <TabsContent value="agreement" className="h-[65vh] overflow-y-auto px-1">
-            <UserAgreementSection />
+          <TabsContent value="agreement" className="flex-1 overflow-hidden m-0">
+            <ScrollArea className="h-full px-1">
+              <UserAgreementSection />
+            </ScrollArea>
           </TabsContent>
 
-          <TabsContent value="help" className="h-[65vh] overflow-y-auto px-1">
-            <HelpSection />
+          <TabsContent value="help" className="flex-1 overflow-hidden m-0">
+            <ScrollArea className="h-full px-1">
+              <HelpSection />
+            </ScrollArea>
           </TabsContent>
 
-          <TabsContent value="about" className="h-[65vh] overflow-y-auto px-1">
-            <AboutSection />
+          <TabsContent value="about" className="flex-1 overflow-hidden m-0">
+            <ScrollArea className="h-full px-1">
+              <AboutSection />
+            </ScrollArea>
           </TabsContent>
         </Tabs>
       </DialogContent>

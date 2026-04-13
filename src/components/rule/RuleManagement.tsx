@@ -183,13 +183,13 @@ export function RuleManagement({ classId }: RuleManagementProps) {
   const negativeRules = rules.filter(r => r.score < 0).length;
 
   return (
-    <div className="flex gap-6 h-full">
-      <div className="w-48 flex-shrink-0">
+    <div className="flex gap-6 h-full overflow-hidden">
+      <div className="w-48 flex-shrink-0 flex flex-col">
         <Button className="w-full justify-start" onClick={() => setShowAddDialog(true)}>
           <Plus className="w-4 h-4 mr-2" />
           新增指标
         </Button>
-        <div className="space-y-1 mt-4">
+        <div className="space-y-1 mt-4 flex-1 overflow-y-auto">
           <div className="flex items-center justify-between text-xs font-semibold text-slate-500 mb-2 px-2">
             <span>分类</span>
             <button 
@@ -268,8 +268,8 @@ export function RuleManagement({ classId }: RuleManagementProps) {
         </div>
       </div>
 
-      <div className="flex-1">
-        <div className="flex items-center justify-between mb-4">
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="flex items-center justify-between mb-4 flex-shrink-0">
           <h3 className="text-lg font-semibold">
             {selectedCategory || "所有"}类指标
           </h3>
@@ -287,8 +287,8 @@ export function RuleManagement({ classId }: RuleManagementProps) {
             <p className="text-muted-foreground">暂无规则</p>
           </div>
         ) : (
-          <ScrollArea className="h-[60vh]">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <ScrollArea className="flex-1 min-h-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pr-4">
               {filteredRules.map((rule) => (
                 <Card key={rule.id}>
                   <CardContent className="pt-4 pb-4">
@@ -307,9 +307,9 @@ export function RuleManagement({ classId }: RuleManagementProps) {
                         </div>
                       </div>
                       <div className="flex gap-1">
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
+                        <Button
+                          variant="ghost"
+                          size="sm"
                           className="h-8 w-8 p-0"
                           onClick={() => {
                             setEditingRule(rule);
@@ -318,9 +318,9 @@ export function RuleManagement({ classId }: RuleManagementProps) {
                         >
                           <Pencil className="w-4 h-4" />
                         </Button>
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
+                        <Button
+                          variant="ghost"
+                          size="sm"
                           className="h-8 w-8 p-0 text-red-500 hover:text-red-700"
                           onClick={() => setRuleToDelete(rule.id)}
                         >

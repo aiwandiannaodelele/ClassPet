@@ -303,7 +303,7 @@ export function ScoreDialog({ open, onOpenChange, studentId, studentName, studen
               ))}
             </div>
 
-            <ScrollArea className="h-[400px] pr-4">
+            <ScrollArea className="flex-1 min-h-0 pr-4">
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 {filteredPositiveRules.length > 0 ? filteredPositiveRules.map((rule) => (
                   <Button
@@ -353,7 +353,7 @@ export function ScoreDialog({ open, onOpenChange, studentId, studentName, studen
               ))}
             </div>
 
-            <ScrollArea className="h-[400px] pr-4">
+            <ScrollArea className="flex-1 min-h-0 pr-4">
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 {filteredNegativeRules.length > 0 ? filteredNegativeRules.map((rule) => (
                   <Button

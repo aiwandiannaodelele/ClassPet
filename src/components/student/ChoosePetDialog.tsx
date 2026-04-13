@@ -108,7 +108,7 @@ export function ChoosePetDialog({ open, onOpenChange, studentId, studentName, on
           })}
         </div>
 
-        <ScrollArea className="flex-1 p-4">
+        <ScrollArea className="flex-1 min-h-0 p-4">
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
             {filteredPets.map((pet, index) => (
               <div

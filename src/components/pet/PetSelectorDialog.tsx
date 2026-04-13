@@ -76,7 +76,7 @@ export function PetSelectorDialog({ open, onOpenChange, studentId, studentName, 
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[80vh]">
+      <DialogContent className="max-w-4xl max-h-[80vh] flex flex-col">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <span>🐾</span>
@@ -86,7 +86,7 @@ export function PetSelectorDialog({ open, onOpenChange, studentId, studentName, 
             选择一只可爱的宠物，它会陪伴你一起成长！
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className="h-[60vh] pr-4">
+        <ScrollArea className="flex-1 min-h-0 pr-4">
           {pets.length === 0 ? (
             <div className="flex items-center justify-center h-40">
               <p className="text-muted-foreground">加载中...</p>

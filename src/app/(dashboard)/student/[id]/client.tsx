@@ -196,19 +196,19 @@ export default function StudentDetailClient({ student }: StudentDetailClientProp
         </Card>
       </div>
 
-      <Card>
+      <Card className="flex flex-col">
         <CardHeader>
           <CardTitle>历史记录</CardTitle>
         </CardHeader>
-        <CardContent>
-          <Tabs defaultValue="scores" className="w-full">
+        <CardContent className="flex-1 flex flex-col overflow-hidden">
+          <Tabs defaultValue="scores" className="w-full flex flex-col flex-1">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="scores">评价记录 ({student.records?.length || 0})</TabsTrigger>
               <TabsTrigger value="exchanges">兑换记录 ({student.exchanges?.length || 0})</TabsTrigger>
             </TabsList>
-            
-            <TabsContent value="scores" className="mt-4">
-              <ScrollArea className="h-[400px] pr-4">
+
+            <TabsContent value="scores" className="mt-4 flex-1 overflow-hidden">
+              <ScrollArea className="h-full pr-4">
                 {student.records && student.records.length > 0 ? (
                   <div className="space-y-3">
                     {student.records.map((record: any) => (
@@ -236,8 +236,8 @@ export default function StudentDetailClient({ student }: StudentDetailClientProp
               </ScrollArea>
             </TabsContent>
 
-            <TabsContent value="exchanges" className="mt-4">
-              <ScrollArea className="h-[400px] pr-4">
+            <TabsContent value="exchanges" className="mt-4 flex-1 overflow-hidden">
+              <ScrollArea className="h-full pr-4">
                 {student.exchanges && student.exchanges.length > 0 ? (
                   <div className="space-y-3">
                     {student.exchanges.map((exchange: any) => (

@@ -100,7 +100,7 @@ export default function DashboardLayout({
     <SearchContext.Provider value={{ searchQuery, setSearchQuery }}>
     <CardSizeContext.Provider value={{ cardSize, setCardSize }}>
       <div
-        className="min-h-screen pb-[112px] bg-slate-50/50" // Account for the taller two-tier bottom nav, added soft background color
+        className="min-h-screen pb-[112px] bg-slate-50/50 overflow-y-auto"
         style={{
           backgroundImage:
             'radial-gradient(circle at 2px 2px, rgba(0,0,0,0.03) 1px, transparent 0)',

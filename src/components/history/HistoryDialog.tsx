@@ -101,7 +101,7 @@ export function HistoryDialog({ open, onOpenChange, classId }: HistoryDialogProp
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex-1 overflow-y-auto pr-2 mt-4">
+        <ScrollArea className="flex-1 min-h-0 mt-4">
           {loading ? (
           <div className="py-12 text-center">
             <Loader2 className="w-8 h-8 animate-spin mx-auto text-muted-foreground" />
@@ -113,7 +113,6 @@ export function HistoryDialog({ open, onOpenChange, classId }: HistoryDialogProp
             <p className="text-muted-foreground">暂无评价记录</p>
           </div>
         ) : (
-          <ScrollArea className="max-h-[60vh]">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -158,9 +157,8 @@ export function HistoryDialog({ open, onOpenChange, classId }: HistoryDialogProp
                 ))}
               </TableBody>
             </Table>
-          </ScrollArea>
         )}
-        </div>
+        </ScrollArea>
       </DialogContent>
       
       <AlertDialog open={!!recordToUndo} onOpenChange={(open) => !open && setRecordToUndo(null)}>
