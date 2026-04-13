@@ -224,8 +224,8 @@ export function ScoreDialog({ open, onOpenChange, studentId, studentName, studen
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-5xl bg-white max-h-[90vh] flex flex-col overflow-hidden">
-        <DialogHeader>
+      <DialogContent className="max-w-5xl bg-white max-h-[90vh] flex flex-col overflow-hidden p-0">
+        <DialogHeader className="px-6 pt-6 pb-2">
           <DialogTitle>{isBatchMode ? "批量喂食 / 惩罚" : "喂食 / 惩罚"}</DialogTitle>
           <div className="text-sm text-muted-foreground">
             {isBatchMode 
@@ -274,13 +274,13 @@ export function ScoreDialog({ open, onOpenChange, studentId, studentName, studen
           </div>
         </DialogHeader>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mt-4 flex flex-col flex-1 min-h-0">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex flex-col flex-1 min-h-0 px-6 pb-6">
           <TabsList className="grid w-full grid-cols-2 flex-shrink-0">
             <TabsTrigger value="feed" className="text-green-600 data-[state=active]:text-green-700">喂食 (加分)</TabsTrigger>
             <TabsTrigger value="penalty" className="text-orange-600 data-[state=active]:text-orange-700">惩罚 (扣分)</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="feed" className="mt-4 flex flex-col flex-1 min-h-0 data-[state=inactive]:hidden">
+          <TabsContent value="feed" className="flex-1 flex flex-col min-h-0 m-0 mt-4 data-[state=inactive]:hidden">
             <div className="flex gap-2 mb-4 overflow-x-auto pb-2 flex-shrink-0">
               <Button
                 variant={selectedCategory === "all" ? "default" : "outline"}
@@ -303,7 +303,7 @@ export function ScoreDialog({ open, onOpenChange, studentId, studentName, studen
               ))}
             </div>
 
-            <ScrollArea className="flex-1 min-h-0 pr-4">
+            <ScrollArea className="flex-1 pr-4">
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 {filteredPositiveRules.length > 0 ? filteredPositiveRules.map((rule) => (
                   <Button
@@ -330,7 +330,7 @@ export function ScoreDialog({ open, onOpenChange, studentId, studentName, studen
             </ScrollArea>
           </TabsContent>
 
-          <TabsContent value="penalty" className="mt-4 flex flex-col flex-1 min-h-0 data-[state=inactive]:hidden">
+          <TabsContent value="penalty" className="flex-1 flex flex-col min-h-0 m-0 mt-4 data-[state=inactive]:hidden">
             <div className="flex gap-2 mb-4 overflow-x-auto pb-2 flex-shrink-0">
               <Button
                 variant={selectedCategory === "all" ? "default" : "outline"}
@@ -353,7 +353,7 @@ export function ScoreDialog({ open, onOpenChange, studentId, studentName, studen
               ))}
             </div>
 
-            <ScrollArea className="flex-1 min-h-0 pr-4">
+            <ScrollArea className="flex-1 pr-4">
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 {filteredNegativeRules.length > 0 ? filteredNegativeRules.map((rule) => (
                   <Button
