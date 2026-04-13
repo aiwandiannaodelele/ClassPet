@@ -274,13 +274,13 @@ export function ScoreDialog({ open, onOpenChange, studentId, studentName, studen
           </div>
         </DialogHeader>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mt-4 flex flex-col flex-1 overflow-hidden">
-          <TabsList className="grid w-full grid-cols-2">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mt-4 flex flex-col flex-1 min-h-0">
+          <TabsList className="grid w-full grid-cols-2 flex-shrink-0">
             <TabsTrigger value="feed" className="text-green-600 data-[state=active]:text-green-700">喂食 (加分)</TabsTrigger>
             <TabsTrigger value="penalty" className="text-orange-600 data-[state=active]:text-orange-700">惩罚 (扣分)</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="feed" className="mt-4 flex flex-col flex-1 overflow-hidden">
+          <TabsContent value="feed" className="mt-4 flex flex-col flex-1 min-h-0 data-[state=inactive]:hidden">
             <div className="flex gap-2 mb-4 overflow-x-auto pb-2 flex-shrink-0">
               <Button
                 variant={selectedCategory === "all" ? "default" : "outline"}
@@ -330,7 +330,7 @@ export function ScoreDialog({ open, onOpenChange, studentId, studentName, studen
             </ScrollArea>
           </TabsContent>
 
-          <TabsContent value="penalty" className="mt-4 flex flex-col flex-1 overflow-hidden">
+          <TabsContent value="penalty" className="mt-4 flex flex-col flex-1 min-h-0 data-[state=inactive]:hidden">
             <div className="flex gap-2 mb-4 overflow-x-auto pb-2 flex-shrink-0">
               <Button
                 variant={selectedCategory === "all" ? "default" : "outline"}
