@@ -5,7 +5,7 @@
 <h1 align="center">ClassPet</h1>
 
 <p align="center">
-A gamified classroom management system built with Next.js 15 and Prisma.<br>
+A gamified classroom management system built with Next.js 16 and Prisma.<br>
 Adopt virtual pets, score student performance, and make teaching fun.
 </p>
 
