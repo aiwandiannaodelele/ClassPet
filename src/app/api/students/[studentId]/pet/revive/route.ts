@@ -114,6 +114,7 @@ export async function POST(
         health: newHealth,
         isDead: false,
         lastScoreAt: new Date(),
+        lastDecayAt: null, // 重置衰减计时器
         reviveCount: {
           increment: 1
         },

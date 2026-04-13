@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { AlertCircle, RotateCcw, Trash2 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
@@ -27,13 +26,9 @@ export function RevivePetDialog({ open, onOpenChange, studentId, studentName, pe
   const [extraHealCost, setExtraHealCost] = useState<number>(0);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
 
-  // 基础复活需要 10 分
   const isNegative = studentScore < 0;
-  const baseCost = isNegative ? 15 : 10;
-  const debt = isNegative ? Math.abs(studentScore) : 0;
-  const totalRequired = baseCost + debt;
-  
-  const canRevive = studentScore >= (baseCost + extraHealCost) && reviveCount < 3;
+  // 负分状态下只能重新领养，不能复活
+  const canRevive = !isNegative && studentScore >= (10 + extraHealCost) && reviveCount < 3;
 
   const handleRevive = async () => {
     setLoading(true);
@@ -96,82 +91,104 @@ export function RevivePetDialog({ open, onOpenChange, studentId, studentName, pe
         </DialogHeader>
 
         <div className="space-y-6 py-4">
-          <Alert variant={isNegative ? "destructive" : "default"}>
-            <AlertTitle>{isNegative ? "惩罚性复活 (负分专属)" : "基础复活 (必选)"}</AlertTitle>
-            <AlertDescription className="text-xs mt-1">
-              {reviveCount >= 3 ? (
-                <span className="text-red-600 font-bold block">
-                  本学期复活次数已达上限（3次），无法再次复活，仅可重新领养。
+          {isNegative ? (
+            // 负分状态：只能重新领养
+            <Alert variant="destructive">
+              <AlertTitle>成长值为负，无法复活</AlertTitle>
+              <AlertDescription className="text-xs mt-1">
+                当前成长值为 <strong>{studentScore}</strong> 分（负数）。
+                <br />
+                <span className="text-red-600 font-bold mt-2 inline-block">
+                  负分状态下无法复活宠物，只能选择重新领养。
                 </span>
-              ) : isNegative ? (
-                <>
-                  当前分数为负数 (<strong>{studentScore}</strong>)。需先补足负分差额 (<strong>{debt}</strong>点)，
-                  并额外消耗 <strong>15</strong> 点成长值惩罚方可复活。复活后健康值仅为 20 点。<br/>
-                  <span className="text-red-600 font-bold mt-2 inline-block">
-                    您当前成长值不足以复活，请先努力赚取至少 {totalRequired} 点积分，或选择重新领养。
-                  </span>
-                </>
-              ) : (
-                <>
-                  直接消耗 <strong>10</strong> 点成长值即可复活宠物。复活后保留原有等级，但初始健康值仅为 30 点。
-                  {studentScore < 10 && (
-                    <span className="text-red-600 font-bold mt-2 block">
-                      您当前成长值不足 10 点，无法复活。请继续赚取积分，或选择重新领养。
+              </AlertDescription>
+            </Alert>
+          ) : (
+            // 正常状态：显示复活选项
+            <>
+              <Alert variant={reviveCount >= 3 ? "destructive" : "default"}>
+                <AlertTitle>{reviveCount >= 3 ? "复活次数已达上限" : "基础复活"}</AlertTitle>
+                <AlertDescription className="text-xs mt-1">
+                  {reviveCount >= 3 ? (
+                    <span className="text-red-600 font-bold block">
+                      本学期复活次数已达上限（3次），无法再次复活，仅可重新领养。
                     </span>
+                  ) : (
+                    <>
+                      直接消耗 <strong>10</strong> 点成长值即可复活宠物。复活后保留原有等级，但初始健康值仅为 30 点。
+                      {studentScore < 10 && (
+                        <span className="text-red-600 font-bold mt-2 block">
+                          您当前成长值不足 10 点，无法复活。请继续赚取积分，或选择重新领养。
+                        </span>
+                      )}
+                    </>
                   )}
-                </>
+                </AlertDescription>
+              </Alert>
+
+              {reviveCount < 3 && (
+                <div className={`space-y-4 border p-4 rounded-md bg-slate-50 ${!canRevive ? 'opacity-50 pointer-events-none' : ''}`}>
+                  <div className="grid gap-2">
+                    <Label className="font-medium text-amber-700">
+                      自主回血 (可选)
+                    </Label>
+                    <p className="text-xs text-slate-500 mb-2">
+                      每额外消耗 1 点成长值，可恢复 2 点健康值。
+                      您当前总成长值: <strong>{studentScore}</strong>
+                    </p>
+                    <div className="flex items-center gap-3">
+                      <Input 
+                        type="number" 
+                        min={0} 
+                        max={Math.floor((100 - 30) / 2)} 
+                        value={extraHealCost} 
+                        onChange={(e) => setExtraHealCost(Number(e.target.value))}
+                        className="w-24"
+                      />
+                      <span className="text-sm">点成长值</span>
+                    </div>
+                    <p className="text-xs text-green-600 mt-1">
+                      预计复活后健康值: <strong>{Math.min(100, 30 + extraHealCost * 2)}</strong> / 100
+                    </p>
+                    <p className="text-xs text-red-600">
+                      总计消耗成长值: <strong>{10 + extraHealCost}</strong> 点
+                    </p>
+                  </div>
+                </div>
               )}
-            </AlertDescription>
-          </Alert>
 
-          <div className={`space-y-4 border p-4 rounded-md bg-slate-50 ${(!canRevive || isNegative) ? 'opacity-50 pointer-events-none' : ''}`}>
-            <div className="grid gap-2">
-              <Label className="font-medium text-amber-700">
-                自主回血 (可选)
-              </Label>
-              <p className="text-xs text-slate-500 mb-2">
-                每额外消耗 1 点成长值，可恢复 2 点健康值。
-                您当前总成长值: <strong>{studentScore}</strong>
-              </p>
-              <div className="flex items-center gap-3">
-                <Input 
-                  type="number" 
-                  min={0} 
-                  max={Math.floor((100 - 30) / 2)} 
-                  value={extraHealCost} 
-                  onChange={(e) => setExtraHealCost(Number(e.target.value))}
-                  className="w-24"
-                />
-                <span className="text-sm">点成长值</span>
+              <div className="text-xs text-center text-slate-400">
+                或者选择放弃当前宠物，重新领养（原宠物数据永久清零，等级归零）
               </div>
-              <p className="text-xs text-green-600 mt-1">
-                预计复活后健康值: <strong>{Math.min(100, 30 + extraHealCost * 2)}</strong> / 100
-              </p>
-              <p className="text-xs text-red-600">
-                总计消耗成长值: <strong>{10 + extraHealCost}</strong> 点
-              </p>
-            </div>
-          </div>
-
-          <div className="text-xs text-center text-slate-400">
-            或者选择放弃当前宠物，重新领养（原宠物数据永久清零，等级归零）
-          </div>
+            </>
+          )}
         </div>
 
         <DialogFooter className="flex-col sm:flex-row gap-2">
-          <Button variant="destructive" className="sm:mr-auto w-full sm:w-auto" onClick={() => setShowResetConfirm(true)} disabled={loading}>
+          <Button 
+            variant="destructive" 
+            className="sm:mr-auto w-full sm:w-auto" 
+            onClick={() => setShowResetConfirm(true)} 
+            disabled={loading}
+          >
             <Trash2 className="w-4 h-4 mr-2" />
             重新领养
           </Button>
-          <div className="flex gap-2 w-full sm:w-auto">
-            <Button variant="outline" onClick={() => onOpenChange(false)} className="flex-1 sm:flex-none">
-              取消
-            </Button>
-            <Button onClick={handleRevive} disabled={loading || !canRevive} className="flex-1 sm:flex-none">
-              <RotateCcw className="w-4 h-4 mr-2" />
-              确认复活
-            </Button>
-          </div>
+          {!isNegative && (
+            <div className="flex gap-2 w-full sm:w-auto">
+              <Button variant="outline" onClick={() => onOpenChange(false)} className="flex-1 sm:flex-none">
+                取消
+              </Button>
+              <Button 
+                onClick={handleRevive} 
+                disabled={loading || !canRevive || reviveCount >= 3} 
+                className="flex-1 sm:flex-none"
+              >
+                <RotateCcw className="w-4 h-4 mr-2" />
+                确认复活
+              </Button>
+            </div>
+          )}
         </DialogFooter>
       </DialogContent>
 

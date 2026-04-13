@@ -147,18 +147,13 @@ export async function POST(request: NextRequest) {
       } else if (finalScoreChange < 0) {
         newHealth = Math.max(0, newHealth + finalScoreChange); // finalScoreChange is negative
         newLevel = student.pet.level; // 扣分不掉级
-        // 如果健康值为0，则死亡
-        if (newHealth === 0) {
+        newLastScoreAt = new Date(); // 扣分时也更新活跃时间（表示有互动）
+        // 如果健康值为0或成长值为负，则死亡
+        if (newHealth === 0 || student.score < 0) {
           isDead = true;
           petDied = true;
+          newHealth = 0;
         }
-      }
-
-      // 如果成长值为负，直接死亡
-      if (student.score < 0) {
-        isDead = true;
-        newHealth = 0;
-        petDied = true;
       }
 
       const updatedPet = await prisma.pet.update({

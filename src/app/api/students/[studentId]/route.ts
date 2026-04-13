@@ -65,23 +65,28 @@ export async function GET(
         }
       }
       
+      // 宽限期后才开始扣血：例如宽限期2天，第3天开始扣（即超过2天的部分）
       if (daysSinceLastScore > decayGraceDays) {
-        const startDecayDay = decayGraceDays;
-        const currentDay = daysSinceLastScore;
+        // 应该扣血的天数 = 超过宽限期的天数
+        const daysShouldDecayed = daysSinceLastScore - decayGraceDays;
         
+        // 计算已经扣过血的天数（基于 lastDecayAt）
         let daysAlreadyDecayed = 0;
-        let tempDecayDate = new Date(lastScoreAt);
-        while (tempDecayDate < lastDecayAt) {
-          tempDecayDate.setDate(tempDecayDate.getDate() + 1);
-          const dayOfWeek = tempDecayDate.getDay();
-          if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-            daysAlreadyDecayed++;
+        if (student.pet.lastDecayAt) {
+          let tempDecayDate = new Date(lastScoreAt);
+          while (tempDecayDate < student.pet.lastDecayAt) {
+            tempDecayDate.setDate(tempDecayDate.getDate() + 1);
+            const dayOfWeek = tempDecayDate.getDay();
+            if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+              daysAlreadyDecayed++;
+            }
           }
+          // 只计算超过宽限期的部分
+          daysAlreadyDecayed = Math.max(0, daysAlreadyDecayed - decayGraceDays);
         }
-        daysAlreadyDecayed = Math.max(0, daysAlreadyDecayed - startDecayDay + 1);
         
-        const totalDaysToDecay = Math.max(0, currentDay - startDecayDay + 1);
-        const newDaysToDecay = totalDaysToDecay - daysAlreadyDecayed;
+        // 本次需要扣血的天数
+        const newDaysToDecay = daysShouldDecayed - daysAlreadyDecayed;
         
         if (newDaysToDecay > 0) {
           const penalty = newDaysToDecay * decayHealthPerDay;
