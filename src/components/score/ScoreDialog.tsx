@@ -3,11 +3,9 @@
 import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, Minus, Loader2, Heart, Trophy, Star } from "lucide-react";
+import { Heart, Trophy, Star } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { triggerScoreUpEffect, triggerScoreDownEffect, triggerLevelUpEffect } from "@/lib/effects";
 import { playScoreUp, playScoreDown, playLevelUp, playError } from "@/lib/audio";
@@ -64,7 +62,6 @@ export function ScoreDialog({ open, onOpenChange, studentId, studentName, studen
   const [rules, setRules] = useState<Rule[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [customCategories, setCustomCategories] = useState<string[]>([]);
   const [studentInfo, setStudentInfo] = useState<StudentInfo | null>(null);
   const [activeTab, setActiveTab] = useState<string>("feed");
 
@@ -76,7 +73,6 @@ export function ScoreDialog({ open, onOpenChange, studentId, studentName, studen
   useEffect(() => {
     if (open) {
       fetchRules();
-      fetchCategories();
       if (!isBatchMode && studentId) {
         fetchStudentInfo();
       }
@@ -93,20 +89,6 @@ export function ScoreDialog({ open, onOpenChange, studentId, studentName, studen
       }
     } catch (error) {
       console.error("Failed to fetch student info:", error);
-    }
-  };
-
-  const fetchCategories = async () => {
-    try {
-      const response = await fetch(`/api/classes/${classId}`);
-      if (response.ok) {
-        const data = await response.json();
-        if (data.ruleCategories) {
-          setCustomCategories(JSON.parse(data.ruleCategories));
-        }
-      }
-    } catch (error) {
-      console.error("Failed to fetch categories:", error);
     }
   };
 
@@ -203,8 +185,6 @@ export function ScoreDialog({ open, onOpenChange, studentId, studentName, studen
     }
   };
 
-  const categories = ["all", ...Array.from(new Set(rules.map((r) => r.category)))];
-  
   const positiveRules = rules.filter(r => r.score > 0);
   const negativeRules = rules.filter(r => r.score < 0);
 
@@ -224,8 +204,8 @@ export function ScoreDialog({ open, onOpenChange, studentId, studentName, studen
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-5xl bg-white max-h-[90vh] flex flex-col overflow-hidden p-0">
-        <DialogHeader className="px-6 pt-6 pb-2">
+      <DialogContent className="max-w-5xl bg-white max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
           <DialogTitle>{isBatchMode ? "批量喂食 / 惩罚" : "喂食 / 惩罚"}</DialogTitle>
           <div className="text-sm text-muted-foreground">
             {isBatchMode 
@@ -274,116 +254,108 @@ export function ScoreDialog({ open, onOpenChange, studentId, studentName, studen
           </div>
         </DialogHeader>
 
-        <div className="flex-1 min-h-0 px-6 pb-6">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
-            <TabsList className="grid w-full grid-cols-2 flex-shrink-0">
-              <TabsTrigger value="feed" className="text-green-600 data-[state=active]:text-green-700">喂食 (加分)</TabsTrigger>
-              <TabsTrigger value="penalty" className="text-orange-600 data-[state=active]:text-orange-700">惩罚 (扣分)</TabsTrigger>
-            </TabsList>
-            
-            <div className="flex-1 min-h-0 mt-4 relative">
-              <TabsContent value="feed" className="absolute inset-0 flex flex-col m-0 data-[state=inactive]:hidden">
-                <div className="flex gap-2 mb-4 overflow-x-auto pb-2 flex-shrink-0">
-                  <Button
-                    variant={selectedCategory === "all" ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setSelectedCategory("all")}
-                    className="whitespace-nowrap"
-                  >
-                    全部
-                  </Button>
-                  {Array.from(new Set(positiveRules.map(r => CATEGORY_MAPPING[r.category] || r.category))).map((category) => (
-                    <Button
-                      key={category}
-                      variant={selectedCategory === category ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setSelectedCategory(category)}
-                      className="whitespace-nowrap"
-                    >
-                      {category}
-                    </Button>
-                  ))}
-                </div>
-
-                <div className="flex-1 overflow-y-auto pr-4">
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                    {filteredPositiveRules.length > 0 ? filteredPositiveRules.map((rule) => (
-                      <Button
-                        key={rule.id}
-                        variant="outline"
-                        className="h-auto flex-col items-center justify-center p-4 gap-2 border-2 hover:border-green-400 hover:bg-green-50 transition-all whitespace-normal text-center relative group"
-                        onClick={() => handleScore(rule)}
-                        disabled={loading}
-                      >
-                        <div className="text-3xl mb-1">
-                          {rule.icon || "⭐"}
-                        </div>
-                        <div className="font-medium text-sm leading-tight line-clamp-2 w-full">
-                          {rule.name}
-                        </div>
-                        <div className="absolute top-2 right-2 text-xs font-bold text-green-600 bg-green-100 px-1.5 py-0.5 rounded-full opacity-80 group-hover:opacity-100">
-                          +{rule.score}
-                        </div>
-                      </Button>
-                    )) : (
-                      <div className="col-span-full text-center py-10 text-muted-foreground">暂无加分规则，请在班级设置中添加</div>
-                    )}
-                  </div>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="penalty" className="absolute inset-0 flex flex-col m-0 data-[state=inactive]:hidden">
-                <div className="flex gap-2 mb-4 overflow-x-auto pb-2 flex-shrink-0">
-                  <Button
-                    variant={selectedCategory === "all" ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setSelectedCategory("all")}
-                    className="whitespace-nowrap"
-                  >
-                    全部
-                  </Button>
-                  {Array.from(new Set(negativeRules.map(r => CATEGORY_MAPPING[r.category] || r.category))).map((category) => (
-                    <Button
-                      key={category}
-                      variant={selectedCategory === category ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setSelectedCategory(category)}
-                      className="whitespace-nowrap"
-                    >
-                      {category}
-                    </Button>
-                  ))}
-                </div>
-
-                <div className="flex-1 overflow-y-auto pr-4">
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                    {filteredNegativeRules.length > 0 ? filteredNegativeRules.map((rule) => (
-                      <Button
-                        key={rule.id}
-                        variant="outline"
-                        className="h-auto flex-col items-center justify-center p-4 gap-2 border-2 hover:border-orange-400 hover:bg-orange-50 transition-all whitespace-normal text-center relative group"
-                        onClick={() => handleScore(rule)}
-                        disabled={loading}
-                      >
-                        <div className="text-3xl mb-1">
-                          {rule.icon || "⚠️"}
-                        </div>
-                        <div className="font-medium text-sm leading-tight line-clamp-2 w-full">
-                          {rule.name}
-                        </div>
-                        <div className="absolute top-2 right-2 text-xs font-bold text-orange-600 bg-orange-100 px-1.5 py-0.5 rounded-full opacity-80 group-hover:opacity-100">
-                          {rule.score}
-                        </div>
-                      </Button>
-                    )) : (
-                      <div className="col-span-full text-center py-10 text-muted-foreground">暂无扣分规则，请在班级设置中添加</div>
-                    )}
-                  </div>
-                </div>
-              </TabsContent>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-4">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="feed" className="text-green-600 data-[state=active]:text-green-700">喂食 (加分)</TabsTrigger>
+            <TabsTrigger value="penalty" className="text-orange-600 data-[state=active]:text-orange-700">惩罚 (扣分)</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="feed" className="mt-4">
+            <div className="flex gap-2 mb-4 overflow-x-auto pb-2">
+              <Button
+                variant={selectedCategory === "all" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedCategory("all")}
+                className="whitespace-nowrap"
+              >
+                全部
+              </Button>
+              {Array.from(new Set(positiveRules.map(r => CATEGORY_MAPPING[r.category] || r.category))).map((category) => (
+                <Button
+                  key={category}
+                  variant={selectedCategory === category ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSelectedCategory(category)}
+                  className="whitespace-nowrap"
+                >
+                  {category}
+                </Button>
+              ))}
             </div>
-          </Tabs>
-        </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+              {filteredPositiveRules.length > 0 ? filteredPositiveRules.map((rule) => (
+                <Button
+                  key={rule.id}
+                  variant="outline"
+                  className="h-auto flex-col items-center justify-center p-4 gap-2 border-2 hover:border-green-400 hover:bg-green-50 transition-all whitespace-normal text-center relative group"
+                  onClick={() => handleScore(rule)}
+                  disabled={loading}
+                >
+                  <div className="text-3xl mb-1">
+                    {rule.icon || "⭐"}
+                  </div>
+                  <div className="font-medium text-sm leading-tight line-clamp-2 w-full">
+                    {rule.name}
+                  </div>
+                  <div className="absolute top-2 right-2 text-xs font-bold text-green-600 bg-green-100 px-1.5 py-0.5 rounded-full opacity-80 group-hover:opacity-100">
+                    +{rule.score}
+                  </div>
+                </Button>
+              )) : (
+                <div className="col-span-full text-center py-10 text-muted-foreground">暂无加分规则，请在班级设置中添加</div>
+              )}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="penalty" className="mt-4">
+            <div className="flex gap-2 mb-4 overflow-x-auto pb-2">
+              <Button
+                variant={selectedCategory === "all" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedCategory("all")}
+                className="whitespace-nowrap"
+              >
+                全部
+              </Button>
+              {Array.from(new Set(negativeRules.map(r => CATEGORY_MAPPING[r.category] || r.category))).map((category) => (
+                <Button
+                  key={category}
+                  variant={selectedCategory === category ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSelectedCategory(category)}
+                  className="whitespace-nowrap"
+                >
+                  {category}
+                </Button>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+              {filteredNegativeRules.length > 0 ? filteredNegativeRules.map((rule) => (
+                <Button
+                  key={rule.id}
+                  variant="outline"
+                  className="h-auto flex-col items-center justify-center p-4 gap-2 border-2 hover:border-orange-400 hover:bg-orange-50 transition-all whitespace-normal text-center relative group"
+                  onClick={() => handleScore(rule)}
+                  disabled={loading}
+                >
+                  <div className="text-3xl mb-1">
+                    {rule.icon || "⚠️"}
+                  </div>
+                  <div className="font-medium text-sm leading-tight line-clamp-2 w-full">
+                    {rule.name}
+                  </div>
+                  <div className="absolute top-2 right-2 text-xs font-bold text-orange-600 bg-orange-100 px-1.5 py-0.5 rounded-full opacity-80 group-hover:opacity-100">
+                    {rule.score}
+                  </div>
+                </Button>
+              )) : (
+                <div className="col-span-full text-center py-10 text-muted-foreground">暂无扣分规则，请在班级设置中添加</div>
+              )}
+            </div>
+          </TabsContent>
+        </Tabs>
       </DialogContent>
     </Dialog>
   );

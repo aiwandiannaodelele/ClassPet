@@ -7,9 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Plus, Loader2, History, ShoppingBag, ChevronLeft, Search, Coins, Calendar, User, LayoutGrid, Check } from "lucide-react";
+import { Plus, Loader2, ShoppingBag, ChevronLeft, Search, Coins, Check } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -186,8 +184,6 @@ export function StoreDialog({ open, onOpenChange, classId }: StoreDialogProps) {
         fetchStudents();
         setIsExchanging(false);
         setSelectedProduct(null);
-        
-        // 触发全局学生列表刷新
         window.dispatchEvent(new Event('class-updated'));
         router.refresh();
       }
@@ -220,8 +216,8 @@ export function StoreDialog({ open, onOpenChange, classId }: StoreDialogProps) {
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
-          <Tabs value={storeTab} onValueChange={setStoreTab} className="flex-1 flex flex-col overflow-hidden">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <Tabs value={storeTab} onValueChange={setStoreTab}>
             {!isExchanging ? (
               <>
                 <DialogHeader className="flex flex-row items-center justify-between pb-4 border-b">
@@ -240,105 +236,103 @@ export function StoreDialog({ open, onOpenChange, classId }: StoreDialogProps) {
                   </Button>
                 </DialogHeader>
 
-                <div className="mt-4 shrink-0">
+                <div className="mt-4">
                   <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="products">商品列表</TabsTrigger>
                     <TabsTrigger value="exchanges">兑换记录</TabsTrigger>
                   </TabsList>
                 </div>
 
-                <div className="flex-1 overflow-hidden">
-                  <TabsContent value="products" className="flex-1 h-full m-0 flex flex-col">
-                    <div className="py-4 flex gap-2 overflow-x-auto no-scrollbar shrink-0 border-b">
+                <TabsContent value="products" className="m-0 mt-4">
+                  <div className="py-4 flex gap-2 overflow-x-auto no-scrollbar border-b">
+                    <Button 
+                      variant={selectedCategory === "all" ? "default" : "outline"} 
+                      size="sm"
+                      onClick={() => setSelectedCategory("all")}
+                    >
+                      全部
+                    </Button>
+                    {productCategories.map(cat => (
                       <Button 
-                        variant={selectedCategory === "all" ? "default" : "outline"} 
+                        key={cat.id}
+                        variant={selectedCategory === cat.id ? "default" : "outline"} 
                         size="sm"
-                        onClick={() => setSelectedCategory("all")}
+                        onClick={() => setSelectedCategory(cat.id)}
                       >
-                        全部
+                        {cat.icon} {cat.name}
                       </Button>
-                      {productCategories.map(cat => (
-                        <Button 
-                          key={cat.id}
-                          variant={selectedCategory === cat.id ? "default" : "outline"} 
-                          size="sm"
-                          onClick={() => setSelectedCategory(cat.id)}
-                        >
-                          {cat.icon} {cat.name}
-                        </Button>
-                      ))}
-                    </div>
+                    ))}
+                  </div>
 
-                    <ScrollArea className="flex-1 pt-4">
-                      {loading ? (
-                        <div className="py-20 text-center text-muted-foreground">加载中...</div>
-                      ) : filteredProducts.length === 0 ? (
-                        <div className="py-20 text-center text-muted-foreground">暂无商品</div>
+                  <div className="pt-4">
+                    {loading ? (
+                      <div className="py-20 text-center text-muted-foreground">加载中...</div>
+                    ) : filteredProducts.length === 0 ? (
+                      <div className="py-20 text-center text-muted-foreground">暂无商品</div>
+                    ) : (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-4 px-1">
+                        {filteredProducts.map((product) => (
+                          <Card key={product.id} className="shadow-sm">
+                            <CardContent className="p-4 flex flex-col gap-3">
+                              <div className="flex justify-between items-start">
+                                <span className="text-4xl">{product.icon || "📦"}</span>
+                                <Badge variant="secondary">
+                                  {productCategories.find(c => c.id === product.category)?.name || product.category}
+                                </Badge>
+                              </div>
+                              <div>
+                                <h4 className="font-bold truncate">{product.name}</h4>
+                                <p className="text-xs text-muted-foreground line-clamp-1">{product.description || "暂无描述"}</p>
+                              </div>
+                              <div className="flex items-center justify-between mt-2">
+                                <div className="flex items-center gap-1 text-amber-600 font-bold">
+                                  <Coins className="w-4 h-4" />
+                                  <span>{product.price}</span>
+                                </div>
+                                <span className="text-[10px] text-muted-foreground">库存: {product.stock === -1 ? "∞" : product.stock}</span>
+                              </div>
+                              <Button size="sm" className="w-full mt-1" onClick={() => handleStartExchange(product)}>
+                                兑换
+                              </Button>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="exchanges" className="m-0 mt-4">
+                  <div className="pt-4">
+                    <div className="space-y-2 px-1">
+                      {loadingExchanges ? (
+                        <div className="py-20 text-center text-muted-foreground">加载记录中...</div>
+                      ) : exchanges.length === 0 ? (
+                        <div className="py-20 text-center text-muted-foreground">暂无记录</div>
                       ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-4 px-1">
-                          {filteredProducts.map((product) => (
-                            <Card key={product.id} className="shadow-sm">
-                              <CardContent className="p-4 flex flex-col gap-3">
-                                <div className="flex justify-between items-start">
-                                  <span className="text-4xl">{product.icon || "📦"}</span>
-                                  <Badge variant="secondary">
-                                    {productCategories.find(c => c.id === product.category)?.name || product.category}
-                                  </Badge>
-                                </div>
-                                <div>
-                                  <h4 className="font-bold truncate">{product.name}</h4>
-                                  <p className="text-xs text-muted-foreground line-clamp-1">{product.description || "暂无描述"}</p>
-                                </div>
-                                <div className="flex items-center justify-between mt-2">
-                                  <div className="flex items-center gap-1 text-amber-600 font-bold">
-                                    <Coins className="w-4 h-4" />
-                                    <span>{product.price}</span>
-                                  </div>
-                                  <span className="text-[10px] text-muted-foreground">库存: {product.stock === -1 ? "∞" : product.stock}</span>
-                                </div>
-                                <Button size="sm" className="w-full mt-1" onClick={() => handleStartExchange(product)}>
-                                  兑换
-                                </Button>
-                              </CardContent>
-                            </Card>
-                          ))}
-                        </div>
-                      )}
-                    </ScrollArea>
-                  </TabsContent>
-
-                  <TabsContent value="exchanges" className="flex-1 h-full m-0 flex flex-col">
-                    <ScrollArea className="flex-1 pt-4">
-                      <div className="space-y-2 px-1">
-                        {loadingExchanges ? (
-                          <div className="py-20 text-center text-muted-foreground">加载记录中...</div>
-                        ) : exchanges.length === 0 ? (
-                          <div className="py-20 text-center text-muted-foreground">暂无记录</div>
-                        ) : (
-                          exchanges.map((record) => (
-                            <div key={record.id} className="flex items-center justify-between p-3 border rounded-lg bg-white shadow-sm">
-                              <div className="flex items-center gap-3">
-                                <span className="text-2xl">{record.product?.icon || "🎁"}</span>
-                                <div>
-                                  <div className="text-sm font-bold">{record.product?.name}</div>
-                                  <div className="text-[10px] text-muted-foreground flex items-center gap-2">
-                                    <span>{record.student?.name}</span>
-                                    <span>•</span>
-                                    <span>{format(new Date(record.createdAt), "MM-dd HH:mm", { locale: zhCN })}</span>
-                                  </div>
+                        exchanges.map((record) => (
+                          <div key={record.id} className="flex items-center justify-between p-3 border rounded-lg bg-white shadow-sm">
+                            <div className="flex items-center gap-3">
+                              <span className="text-2xl">{record.product?.icon || "🎁"}</span>
+                              <div>
+                                <div className="text-sm font-bold">{record.product?.name}</div>
+                                <div className="text-[10px] text-muted-foreground flex items-center gap-2">
+                                  <span>{record.student?.name}</span>
+                                  <span>•</span>
+                                  <span>{format(new Date(record.createdAt), "MM-dd HH:mm", { locale: zhCN })}</span>
                                 </div>
                               </div>
-                              <div className="text-amber-600 font-bold text-sm">-{record.product?.price} 币</div>
                             </div>
-                          ))
-                        )}
-                      </div>
-                    </ScrollArea>
-                  </TabsContent>
-                </div>
+                            <div className="text-amber-600 font-bold text-sm">-{record.product?.price} 币</div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                </TabsContent>
               </>
             ) : (
-              <div className="flex-1 flex flex-col overflow-hidden">
+              <div>
                 <DialogHeader className="flex flex-row items-center justify-between pb-4 border-b">
                   <div className="flex items-center gap-3">
                     <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setIsExchanging(false)}>
@@ -359,7 +353,7 @@ export function StoreDialog({ open, onOpenChange, classId }: StoreDialogProps) {
                   </div>
                 </DialogHeader>
 
-                <ScrollArea className="flex-1 p-4">
+                <div className="p-4">
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
                     {filteredStudents.map((student) => {
                       const isSelected = selectedStudentIds.includes(student.id);
@@ -368,7 +362,7 @@ export function StoreDialog({ open, onOpenChange, classId }: StoreDialogProps) {
                       return (
                         <div 
                           key={student.id}
-                          className={`p-3 rounded-lg border flex flex-col items-center gap-2 transition-colors cursor-pointer ${
+                          className={`p-3 rounded-lg border flex flex-col items-center gap-2 transition-colors cursor-pointer relative ${
                             isSelected ? "border-primary bg-primary/5" : canAfford ? "hover:bg-slate-50" : "opacity-50 grayscale bg-slate-50 cursor-not-allowed"
                           }`}
                           onClick={() => canAfford && toggleStudent(student.id)}
@@ -386,7 +380,7 @@ export function StoreDialog({ open, onOpenChange, classId }: StoreDialogProps) {
                       );
                     })}
                   </div>
-                </ScrollArea>
+                </div>
 
                 <DialogFooter className="p-4 border-t flex items-center justify-between">
                   <div className="text-xs text-muted-foreground">已选 {selectedStudentIds.length} 人</div>

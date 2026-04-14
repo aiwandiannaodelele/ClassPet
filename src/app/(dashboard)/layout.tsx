@@ -42,10 +42,24 @@ export default function DashboardLayout({
   const [loading, setLoading] = useState(true);
   const [currentSort, setCurrentSort] = useState('student-id');
   const [searchQuery, setSearchQuery] = useState('');
-  const [cardSize, setCardSize] = useState<'small' | 'medium' | 'large'>('medium');
+  const [cardSize, setCardSizeState] = useState<'small' | 'medium' | 'large'>('medium');
   const [viewMode, setViewMode] = useState<string>('students');
   const [isMultiSelectMode, setIsMultiSelectMode] = useState(false);
   const [selectedStudentIds, setSelectedStudentIds] = useState<string[]>([]);
+
+  // Load card size from localStorage on mount
+  useEffect(() => {
+    const savedSize = localStorage.getItem('cardSize') as 'small' | 'medium' | 'large' | null;
+    if (savedSize && ['small', 'medium', 'large'].includes(savedSize)) {
+      setCardSizeState(savedSize);
+    }
+  }, []);
+
+  // Save card size to localStorage when it changes
+  const setCardSize = (size: 'small' | 'medium' | 'large') => {
+    setCardSizeState(size);
+    localStorage.setItem('cardSize', size);
+  };
 
   const toggleMultiSelectMode = () => {
     setIsMultiSelectMode(prev => {

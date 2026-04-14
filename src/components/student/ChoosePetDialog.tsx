@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 import { PET_CATEGORIES, PET_IMAGES } from "@/lib/constants/pets";
 
@@ -75,7 +74,7 @@ export function ChoosePetDialog({ open, onOpenChange, studentId, studentName, on
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[80vh] flex flex-col">
+      <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>为 {studentName} 选择守护宠物</DialogTitle>
           <DialogDescription>
@@ -83,7 +82,7 @@ export function ChoosePetDialog({ open, onOpenChange, studentId, studentName, on
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex gap-2 overflow-x-auto pb-2 flex-shrink-0 border-b">
+        <div className="flex gap-2 overflow-x-auto pb-2 border-b my-4">
           <Button
             variant={selectedCategory === "all" ? "default" : "outline"}
             size="sm"
@@ -108,28 +107,26 @@ export function ChoosePetDialog({ open, onOpenChange, studentId, studentName, on
           })}
         </div>
 
-        <ScrollArea className="flex-1 min-h-0 p-4">
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
-            {filteredPets.map((pet, index) => (
-              <div
-                key={index}
-                className={`flex flex-col items-center justify-center p-2 rounded-xl cursor-pointer transition-all border-2 ${
-                  selectedPet?.name === pet.name
-                    ? "border-amber-500 bg-amber-50 scale-105 shadow-md"
-                    : "border-transparent hover:border-amber-200 hover:bg-slate-50"
-                }`}
-                onClick={() => setSelectedPet(pet)}
-              >
-                <div className="h-16 w-16 mb-2 flex items-center justify-center">
-                  <img src={pet.imageUrl} alt={pet.name} className="h-full w-full object-contain drop-shadow-sm" />
-                </div>
-                <span className="text-xs text-center font-medium text-slate-700">
-                  {pet.name}
-                </span>
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4 p-4">
+          {filteredPets.map((pet, index) => (
+            <div
+              key={index}
+              className={`flex flex-col items-center justify-center p-2 rounded-xl cursor-pointer transition-all border-2 ${
+                selectedPet?.name === pet.name
+                  ? "border-amber-500 bg-amber-50 scale-105 shadow-md"
+                  : "border-transparent hover:border-amber-200 hover:bg-slate-50"
+              }`}
+              onClick={() => setSelectedPet(pet)}
+            >
+              <div className="h-16 w-16 mb-2 flex items-center justify-center">
+                <img src={pet.imageUrl} alt={pet.name} className="h-full w-full object-contain drop-shadow-sm" />
               </div>
-            ))}
-          </div>
-        </ScrollArea>
+              <span className="text-xs text-center font-medium text-slate-700">
+                {pet.name}
+              </span>
+            </div>
+          ))}
+        </div>
 
         <DialogFooter className="mt-4">
           <Button variant="outline" onClick={() => onOpenChange(false)}>

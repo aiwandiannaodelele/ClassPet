@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { History, Loader2, Undo2, ClipboardList } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -70,9 +69,7 @@ export function HistoryDialog({ open, onOpenChange, classId }: HistoryDialogProp
 
       if (response.ok) {
         toast.success("记录已成功撤销");
-        // Remove from local state to update UI immediately
         setRecords(prev => prev.filter(r => r.id !== recordId));
-        // Refresh the underlying page data so student scores update
         if (typeof window !== 'undefined' && (window as any).refreshStudentList) {
           (window as any).refreshStudentList();
         }
@@ -90,7 +87,7 @@ export function HistoryDialog({ open, onOpenChange, classId }: HistoryDialogProp
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <History className="w-5 h-5" />
@@ -101,18 +98,18 @@ export function HistoryDialog({ open, onOpenChange, classId }: HistoryDialogProp
           </DialogDescription>
         </DialogHeader>
 
-        <ScrollArea className="flex-1 min-h-0 mt-4">
+        <div className="mt-4">
           {loading ? (
-          <div className="py-12 text-center">
-            <Loader2 className="w-8 h-8 animate-spin mx-auto text-muted-foreground" />
-            <p className="text-muted-foreground mt-2">加载中...</p>
-          </div>
-        ) : records.length === 0 ? (
-          <div className="py-12 text-center">
-            <ClipboardList className="w-12 h-12 mx-auto text-slate-300 mb-3" />
-            <p className="text-muted-foreground">暂无评价记录</p>
-          </div>
-        ) : (
+            <div className="py-12 text-center">
+              <Loader2 className="w-8 h-8 animate-spin mx-auto text-muted-foreground" />
+              <p className="text-muted-foreground mt-2">加载中...</p>
+            </div>
+          ) : records.length === 0 ? (
+            <div className="py-12 text-center">
+              <ClipboardList className="w-12 h-12 mx-auto text-slate-300 mb-3" />
+              <p className="text-muted-foreground">暂无评价记录</p>
+            </div>
+          ) : (
             <Table>
               <TableHeader>
                 <TableRow>
@@ -157,8 +154,8 @@ export function HistoryDialog({ open, onOpenChange, classId }: HistoryDialogProp
                 ))}
               </TableBody>
             </Table>
-        )}
-        </ScrollArea>
+          )}
+        </div>
       </DialogContent>
       
       <AlertDialog open={!!recordToUndo} onOpenChange={(open) => !open && setRecordToUndo(null)}>
