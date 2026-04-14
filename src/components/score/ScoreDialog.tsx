@@ -280,7 +280,7 @@ export function ScoreDialog({ open, onOpenChange, studentId, studentName, studen
             <TabsTrigger value="penalty" className="text-orange-600 data-[state=active]:text-orange-700">惩罚 (扣分)</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="feed" className="flex-1 flex flex-col min-h-0 m-0 mt-4 data-[state=inactive]:hidden">
+          <TabsContent value="feed" className="flex-1 flex flex-col min-h-0 m-0 mt-4 data-[state=inactive]:hidden overflow-hidden">
             <div className="flex gap-2 mb-4 overflow-x-auto pb-2 flex-shrink-0">
               <Button
                 variant={selectedCategory === "all" ? "default" : "outline"}
@@ -303,7 +303,7 @@ export function ScoreDialog({ open, onOpenChange, studentId, studentName, studen
               ))}
             </div>
 
-            <ScrollArea className="flex-1 pr-4">
+            <div className="flex-1 overflow-y-auto pr-4 min-h-0">
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 {filteredPositiveRules.length > 0 ? filteredPositiveRules.map((rule) => (
                   <Button
@@ -327,10 +327,10 @@ export function ScoreDialog({ open, onOpenChange, studentId, studentName, studen
                   <div className="col-span-full text-center py-10 text-muted-foreground">暂无加分规则，请在班级设置中添加</div>
                 )}
               </div>
-            </ScrollArea>
+            </div>
           </TabsContent>
 
-          <TabsContent value="penalty" className="flex-1 flex flex-col min-h-0 m-0 mt-4 data-[state=inactive]:hidden">
+          <TabsContent value="penalty" className="flex-1 flex flex-col min-h-0 m-0 mt-4 data-[state=inactive]:hidden overflow-hidden">
             <div className="flex gap-2 mb-4 overflow-x-auto pb-2 flex-shrink-0">
               <Button
                 variant={selectedCategory === "all" ? "default" : "outline"}
@@ -353,7 +353,7 @@ export function ScoreDialog({ open, onOpenChange, studentId, studentName, studen
               ))}
             </div>
 
-            <ScrollArea className="flex-1 pr-4">
+            <div className="flex-1 overflow-y-auto pr-4 min-h-0">
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 {filteredNegativeRules.length > 0 ? filteredNegativeRules.map((rule) => (
                   <Button
@@ -377,7 +377,7 @@ export function ScoreDialog({ open, onOpenChange, studentId, studentName, studen
                   <div className="col-span-full text-center py-10 text-muted-foreground">暂无扣分规则，请在班级设置中添加</div>
                 )}
               </div>
-            </ScrollArea>
+            </div>
           </TabsContent>
         </Tabs>
       </DialogContent>
