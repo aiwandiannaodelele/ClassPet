@@ -274,112 +274,116 @@ export function ScoreDialog({ open, onOpenChange, studentId, studentName, studen
           </div>
         </DialogHeader>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex flex-col flex-1 min-h-0 px-6 pb-6">
-          <TabsList className="grid w-full grid-cols-2 flex-shrink-0">
-            <TabsTrigger value="feed" className="text-green-600 data-[state=active]:text-green-700">喂食 (加分)</TabsTrigger>
-            <TabsTrigger value="penalty" className="text-orange-600 data-[state=active]:text-orange-700">惩罚 (扣分)</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="feed" className="flex-1 flex flex-col min-h-0 m-0 mt-4 data-[state=inactive]:hidden overflow-hidden">
-            <div className="flex gap-2 mb-4 overflow-x-auto pb-2 flex-shrink-0">
-              <Button
-                variant={selectedCategory === "all" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedCategory("all")}
-                className="whitespace-nowrap"
-              >
-                全部
-              </Button>
-              {Array.from(new Set(positiveRules.map(r => CATEGORY_MAPPING[r.category] || r.category))).map((category) => (
-                <Button
-                  key={category}
-                  variant={selectedCategory === category ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setSelectedCategory(category)}
-                  className="whitespace-nowrap"
-                >
-                  {category}
-                </Button>
-              ))}
-            </div>
-
-            <div className="flex-1 overflow-y-auto pr-4 min-h-0">
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                {filteredPositiveRules.length > 0 ? filteredPositiveRules.map((rule) => (
+        <div className="flex-1 min-h-0 px-6 pb-6">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
+            <TabsList className="grid w-full grid-cols-2 flex-shrink-0">
+              <TabsTrigger value="feed" className="text-green-600 data-[state=active]:text-green-700">喂食 (加分)</TabsTrigger>
+              <TabsTrigger value="penalty" className="text-orange-600 data-[state=active]:text-orange-700">惩罚 (扣分)</TabsTrigger>
+            </TabsList>
+            
+            <div className="flex-1 min-h-0 mt-4 relative">
+              <TabsContent value="feed" className="absolute inset-0 flex flex-col m-0 data-[state=inactive]:hidden">
+                <div className="flex gap-2 mb-4 overflow-x-auto pb-2 flex-shrink-0">
                   <Button
-                    key={rule.id}
-                    variant="outline"
-                    className="h-auto flex-col items-center justify-center p-4 gap-2 border-2 hover:border-green-400 hover:bg-green-50 transition-all whitespace-normal text-center relative group"
-                    onClick={() => handleScore(rule)}
-                    disabled={loading}
+                    variant={selectedCategory === "all" ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedCategory("all")}
+                    className="whitespace-nowrap"
                   >
-                    <div className="text-3xl mb-1">
-                      {rule.icon || "⭐"}
-                    </div>
-                    <div className="font-medium text-sm leading-tight line-clamp-2 w-full">
-                      {rule.name}
-                    </div>
-                    <div className="absolute top-2 right-2 text-xs font-bold text-green-600 bg-green-100 px-1.5 py-0.5 rounded-full opacity-80 group-hover:opacity-100">
-                      +{rule.score}
-                    </div>
+                    全部
                   </Button>
-                )) : (
-                  <div className="col-span-full text-center py-10 text-muted-foreground">暂无加分规则，请在班级设置中添加</div>
-                )}
-              </div>
-            </div>
-          </TabsContent>
+                  {Array.from(new Set(positiveRules.map(r => CATEGORY_MAPPING[r.category] || r.category))).map((category) => (
+                    <Button
+                      key={category}
+                      variant={selectedCategory === category ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setSelectedCategory(category)}
+                      className="whitespace-nowrap"
+                    >
+                      {category}
+                    </Button>
+                  ))}
+                </div>
 
-          <TabsContent value="penalty" className="flex-1 flex flex-col min-h-0 m-0 mt-4 data-[state=inactive]:hidden overflow-hidden">
-            <div className="flex gap-2 mb-4 overflow-x-auto pb-2 flex-shrink-0">
-              <Button
-                variant={selectedCategory === "all" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedCategory("all")}
-                className="whitespace-nowrap"
-              >
-                全部
-              </Button>
-              {Array.from(new Set(negativeRules.map(r => CATEGORY_MAPPING[r.category] || r.category))).map((category) => (
-                <Button
-                  key={category}
-                  variant={selectedCategory === category ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setSelectedCategory(category)}
-                  className="whitespace-nowrap"
-                >
-                  {category}
-                </Button>
-              ))}
-            </div>
+                <div className="flex-1 overflow-y-auto pr-4">
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                    {filteredPositiveRules.length > 0 ? filteredPositiveRules.map((rule) => (
+                      <Button
+                        key={rule.id}
+                        variant="outline"
+                        className="h-auto flex-col items-center justify-center p-4 gap-2 border-2 hover:border-green-400 hover:bg-green-50 transition-all whitespace-normal text-center relative group"
+                        onClick={() => handleScore(rule)}
+                        disabled={loading}
+                      >
+                        <div className="text-3xl mb-1">
+                          {rule.icon || "⭐"}
+                        </div>
+                        <div className="font-medium text-sm leading-tight line-clamp-2 w-full">
+                          {rule.name}
+                        </div>
+                        <div className="absolute top-2 right-2 text-xs font-bold text-green-600 bg-green-100 px-1.5 py-0.5 rounded-full opacity-80 group-hover:opacity-100">
+                          +{rule.score}
+                        </div>
+                      </Button>
+                    )) : (
+                      <div className="col-span-full text-center py-10 text-muted-foreground">暂无加分规则，请在班级设置中添加</div>
+                    )}
+                  </div>
+                </div>
+              </TabsContent>
 
-            <div className="flex-1 overflow-y-auto pr-4 min-h-0">
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                {filteredNegativeRules.length > 0 ? filteredNegativeRules.map((rule) => (
+              <TabsContent value="penalty" className="absolute inset-0 flex flex-col m-0 data-[state=inactive]:hidden">
+                <div className="flex gap-2 mb-4 overflow-x-auto pb-2 flex-shrink-0">
                   <Button
-                    key={rule.id}
-                    variant="outline"
-                    className="h-auto flex-col items-center justify-center p-4 gap-2 border-2 hover:border-orange-400 hover:bg-orange-50 transition-all whitespace-normal text-center relative group"
-                    onClick={() => handleScore(rule)}
-                    disabled={loading}
+                    variant={selectedCategory === "all" ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedCategory("all")}
+                    className="whitespace-nowrap"
                   >
-                    <div className="text-3xl mb-1">
-                      {rule.icon || "⚠️"}
-                    </div>
-                    <div className="font-medium text-sm leading-tight line-clamp-2 w-full">
-                      {rule.name}
-                    </div>
-                    <div className="absolute top-2 right-2 text-xs font-bold text-orange-600 bg-orange-100 px-1.5 py-0.5 rounded-full opacity-80 group-hover:opacity-100">
-                      {rule.score}
-                    </div>
+                    全部
                   </Button>
-                )) : (
-                  <div className="col-span-full text-center py-10 text-muted-foreground">暂无扣分规则，请在班级设置中添加</div>
-                )}
-              </div>
+                  {Array.from(new Set(negativeRules.map(r => CATEGORY_MAPPING[r.category] || r.category))).map((category) => (
+                    <Button
+                      key={category}
+                      variant={selectedCategory === category ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setSelectedCategory(category)}
+                      className="whitespace-nowrap"
+                    >
+                      {category}
+                    </Button>
+                  ))}
+                </div>
+
+                <div className="flex-1 overflow-y-auto pr-4">
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                    {filteredNegativeRules.length > 0 ? filteredNegativeRules.map((rule) => (
+                      <Button
+                        key={rule.id}
+                        variant="outline"
+                        className="h-auto flex-col items-center justify-center p-4 gap-2 border-2 hover:border-orange-400 hover:bg-orange-50 transition-all whitespace-normal text-center relative group"
+                        onClick={() => handleScore(rule)}
+                        disabled={loading}
+                      >
+                        <div className="text-3xl mb-1">
+                          {rule.icon || "⚠️"}
+                        </div>
+                        <div className="font-medium text-sm leading-tight line-clamp-2 w-full">
+                          {rule.name}
+                        </div>
+                        <div className="absolute top-2 right-2 text-xs font-bold text-orange-600 bg-orange-100 px-1.5 py-0.5 rounded-full opacity-80 group-hover:opacity-100">
+                          {rule.score}
+                        </div>
+                      </Button>
+                    )) : (
+                      <div className="col-span-full text-center py-10 text-muted-foreground">暂无扣分规则，请在班级设置中添加</div>
+                    )}
+                  </div>
+                </div>
+              </TabsContent>
             </div>
-          </TabsContent>
-        </Tabs>
+          </Tabs>
+        </div>
       </DialogContent>
     </Dialog>
   );
