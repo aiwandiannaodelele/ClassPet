@@ -165,7 +165,7 @@ export function StudentListContainer({ classId, initialStudents }: StudentListCo
       {isMultiSelectMode && (
         <div className="fixed bottom-32 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 bg-slate-900/90 backdrop-blur-md text-white px-6 py-3 rounded-full shadow-2xl animate-in slide-in-from-bottom-5">
           <div className="flex items-center gap-2 font-medium">
-            <span className="bg-amber-500 text-white h-6 w-6 rounded-full flex items-center justify-center text-xs">
+            <span className="bg-primary text-white h-6 w-6 rounded-full flex items-center justify-center text-xs">
               {selectedStudentIds.length}
             </span>
             <span>已选择</span>
@@ -184,7 +184,7 @@ export function StudentListContainer({ classId, initialStudents }: StudentListCo
 
           <Button 
             size="sm" 
-            className="bg-amber-500 hover:bg-amber-600 text-white font-medium ml-2 shadow-sm"
+            className="bg-primary hover:bg-primary text-white font-medium ml-2 shadow-sm"
             onClick={() => {
               if (selectedStudentIds.length === 0) {
                 toast.error('请至少选择一名学生');

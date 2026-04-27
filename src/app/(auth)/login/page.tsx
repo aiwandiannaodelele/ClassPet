@@ -88,7 +88,7 @@ function LoginForm() {
     <Card className="w-full max-w-md shadow-lg border-slate-200">
       <CardHeader className="space-y-1 text-center">
         <div className="flex justify-center mb-4">
-          <div className="h-16 w-16 bg-amber-100 rounded-xl flex items-center justify-center shadow-sm border border-amber-200 overflow-hidden">
+          <div className="h-16 w-16 bg-primary/20 rounded-xl flex items-center justify-center shadow-sm border border-primary/30 overflow-hidden">
             <img src="/logo.png" alt="ClassPet Logo" className="w-full h-full object-cover" />
           </div>
         </div>
@@ -149,7 +149,7 @@ function LoginForm() {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label htmlFor="password">密码</Label>
-                <Link href="/forgot-password" className="text-xs text-amber-600 hover:underline">忘记密码?</Link>
+                <Link href="/forgot-password" className="text-xs text-primary hover:underline">忘记密码?</Link>
             </div>
             <Input 
               id="password" 
@@ -169,7 +169,7 @@ function LoginForm() {
             </div>
           )}
           
-          <Button type="submit" className="w-full bg-amber-500 hover:bg-amber-600 text-white" disabled={isLoading}>
+          <Button type="submit" className="w-full bg-primary hover:bg-primary text-white" disabled={isLoading}>
             {isLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
             登录
           </Button>
@@ -179,7 +179,7 @@ function LoginForm() {
       <CardFooter className="flex flex-col">
         <div className="text-center text-sm text-slate-500">
           还没有账号？{" "}
-          <Link href="/register" className="text-amber-600 hover:underline font-medium">
+          <Link href="/register" className="text-primary hover:underline font-medium">
             免费注册
           </Link>
         </div>
@@ -191,7 +191,7 @@ function LoginForm() {
 export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
-      <Suspense fallback={<div className="flex justify-center"><Loader2 className="w-8 h-8 animate-spin text-amber-500" /></div>}>
+      <Suspense fallback={<div className="flex justify-center"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div>}>
         <LoginForm />
       </Suspense>
     </div>

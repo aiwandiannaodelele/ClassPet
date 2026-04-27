@@ -61,20 +61,20 @@ export default function ForgotPasswordPage() {
             {devResetUrl && (
               <div className="rounded-md border bg-white p-3 text-sm break-all">
                 <div className="text-xs text-muted-foreground mb-1">开发模式重置链接</div>
-                <Link href={devResetUrl} className="text-amber-600 hover:underline">
+                <Link href={devResetUrl} className="text-primary hover:underline">
                   {devResetUrl}
                 </Link>
               </div>
             )}
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <Button type="submit" className="w-full bg-amber-500 hover:bg-amber-600 text-white" disabled={isLoading}>
+            <Button type="submit" className="w-full bg-primary hover:bg-primary text-white" disabled={isLoading}>
               {isLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
               发送重置指引
             </Button>
             <div className="text-center text-sm text-slate-500">
               想起密码了？{" "}
-              <Link href="/login" className="text-amber-600 hover:underline font-medium">
+              <Link href="/login" className="text-primary hover:underline font-medium">
                 返回登录
               </Link>
             </div>

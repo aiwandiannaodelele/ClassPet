@@ -105,17 +105,17 @@ export default function HomePage() {
     return (
       <div className="flex justify-center mt-24">
         <Card className="mx-auto max-w-md border-slate-200/60 shadow-md rounded-xl bg-white/80 backdrop-blur-sm relative overflow-hidden w-full">
-          <div className="absolute top-0 left-0 w-full h-1 bg-amber-400" />
+          <div className="absolute top-0 left-0 w-full h-1 bg-primary" />
           <CardContent className="pt-12 pb-12">
             <div className="text-center">
-              <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-amber-50 shadow-inner border border-amber-200/50 overflow-hidden">
+              <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 shadow-inner border border-primary/30/50 overflow-hidden">
                 <img src="/logo.png" alt="ClassPet Logo" className="w-full h-full object-cover" />
               </div>
               <h3 className="text-2xl font-bold text-slate-800 mb-3">欢迎来到萌宠班级屋</h3>
               <p className="text-slate-500 mb-2">
                 当前还没有创建任何班级。
               </p>
-              <p className="text-sm font-medium text-amber-600 bg-amber-50 inline-flex items-center gap-1 px-4 py-1.5 rounded-full">
+              <p className="text-sm font-medium text-primary bg-primary/10 inline-flex items-center gap-1 px-4 py-1.5 rounded-full">
                 点击底部导航栏中心的 <Plus className="w-4 h-4" /> 按钮开始创建！
               </p>
             </div>

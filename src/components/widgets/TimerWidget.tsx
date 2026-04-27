@@ -70,7 +70,7 @@ export function TimerWidget({ onClose }: { onClose: () => void }) {
         <Button 
           variant="ghost" 
           size="icon" 
-          className="h-6 w-8 rounded-full text-slate-400 hover:text-amber-600 hover:bg-amber-50"
+          className="h-6 w-8 rounded-full text-slate-400 hover:text-primary hover:bg-primary/10"
           onClick={() => adjustTime(step)}
         >
           <Plus className="h-4 w-4" />
@@ -85,7 +85,7 @@ export function TimerWidget({ onClose }: { onClose: () => void }) {
         <Button 
           variant="ghost" 
           size="icon" 
-          className="h-6 w-8 rounded-full text-slate-400 hover:text-amber-600 hover:bg-amber-50"
+          className="h-6 w-8 rounded-full text-slate-400 hover:text-primary hover:bg-primary/10"
           onClick={() => adjustTime(-step)}
         >
           <Minus className="h-4 w-4" />
@@ -105,13 +105,13 @@ export function TimerWidget({ onClose }: { onClose: () => void }) {
       exit={{ opacity: 0, scale: 0.9 }}
       className="fixed z-50 shadow-xl top-24 right-24 cursor-move"
     >
-      <Card className="w-[360px] overflow-hidden border-2 border-amber-100 bg-white flex flex-col rounded-xl">
-        <div className="bg-amber-50/50 px-3 py-2 flex justify-between items-center border-b border-amber-100">
-          <span className="font-semibold text-sm text-amber-900 flex items-center gap-2">
-            <Timer className="w-4 h-4 text-amber-600" />
+      <Card className="w-[360px] overflow-hidden border-2 border-primary/20 bg-white flex flex-col rounded-xl">
+        <div className="bg-primary/10/50 px-3 py-2 flex justify-between items-center border-b border-primary/20">
+          <span className="font-semibold text-sm text-primary flex items-center gap-2">
+            <Timer className="w-4 h-4 text-primary" />
             计时器
           </span>
-          <Button variant="ghost" size="icon" className="h-6 w-6 rounded-full hover:bg-amber-100 text-amber-700" onClick={onClose}>
+          <Button variant="ghost" size="icon" className="h-6 w-6 rounded-full hover:bg-primary/20 text-primary" onClick={onClose}>
             <X className="h-4 w-4" />
           </Button>
         </div>
@@ -154,7 +154,7 @@ export function TimerWidget({ onClose }: { onClose: () => void }) {
           {/* Bottom Controls */}
           <div className="flex items-center justify-center gap-6 w-full">
             <Button 
-              className={`h-14 w-14 rounded-full shadow-md transition-transform hover:scale-105 ${isRunning ? 'bg-red-500 hover:bg-red-600' : 'bg-amber-500 hover:bg-amber-600'}`}
+              className={`h-14 w-14 rounded-full shadow-md transition-transform hover:scale-105 ${isRunning ? 'bg-red-500 hover:bg-red-600' : 'bg-primary hover:bg-primary'}`}
               onClick={toggleTimer}
             >
               {isRunning ? <Square className="h-5 w-5 fill-current" /> : <Play className="h-6 w-6 ml-1 fill-current" />}
@@ -163,7 +163,7 @@ export function TimerWidget({ onClose }: { onClose: () => void }) {
             <Button 
               variant="outline" 
               size="icon"
-              className="h-10 w-10 rounded-full border-slate-200 text-slate-500 hover:text-amber-600 hover:border-amber-200 hover:bg-amber-50 absolute right-6 bottom-6" 
+              className="h-10 w-10 rounded-full border-slate-200 text-slate-500 hover:text-primary hover:border-primary/30 hover:bg-primary/10 absolute right-6 bottom-6" 
               onClick={resetTimer}
               title="重置"
             >

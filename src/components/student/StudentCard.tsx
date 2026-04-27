@@ -185,13 +185,13 @@ export function StudentCard({ student }: StudentCardProps) {
     <>
       <motion.div variants={cardVariants}>
         <Card 
-          className={`relative h-full transform overflow-hidden transition-all duration-200 hover:border-amber-400 group rounded-xl bg-white/90 backdrop-blur-md shadow-sm hover:shadow-md cursor-pointer ${isMultiSelectMode && isSelected ? 'border-amber-500 border-[3px] ring-2 ring-amber-200 ring-offset-2' : 'border-slate-200/60 border-[1px]'} ${isMultiSelectMode && (!localStudent.pet || localStudent.pet.isDead) ? 'opacity-60 grayscale-[0.5]' : ''}`}
+          className={`relative h-full transform overflow-hidden transition-all duration-200 hover:border-primary group rounded-xl bg-white/90 backdrop-blur-md shadow-sm hover:shadow-md cursor-pointer ${isMultiSelectMode && isSelected ? 'border-primary border-[3px] ring-2 ring-primary/30 ring-offset-2' : 'border-slate-200/60 border-[1px]'} ${isMultiSelectMode && (!localStudent.pet || localStudent.pet.isDead) ? 'opacity-60 grayscale-[0.5]' : ''}`}
           onClick={handleCardClick}
         >
           
           {isMultiSelectMode && (
             <div className="absolute left-3 top-3 z-10">
-              <div className={`h-6 w-6 rounded-full border-2 flex items-center justify-center transition-colors ${isSelected ? 'bg-amber-500 border-amber-500' : 'border-slate-300 bg-white/80'}`}>
+              <div className={`h-6 w-6 rounded-full border-2 flex items-center justify-center transition-colors ${isSelected ? 'bg-primary border-primary' : 'border-slate-300 bg-white/80'}`}>
                 {isSelected && <CheckCircle2 className="h-4 w-4 text-white" />}
               </div>
             </div>
@@ -202,7 +202,7 @@ export function StudentCard({ student }: StudentCardProps) {
               {!localStudent.pet.isDead && (
                 <Badge 
                   variant="outline" 
-                  className="px-2 py-0.5 text-[10px] font-bold border-none bg-amber-500 text-white shadow-sm"
+                  className="px-2 py-0.5 text-[10px] font-bold border-none bg-primary text-white shadow-sm"
                 >
                   Lv.{localStudent.pet.level}
                 </Badge>
@@ -229,7 +229,7 @@ export function StudentCard({ student }: StudentCardProps) {
                   className={`h-full w-full object-contain drop-shadow-sm transition-all duration-200 group-hover:scale-110 ${localStudent.pet?.isDead ? 'grayscale opacity-70' : ''} ${isAnimating ? 'animate-bounce' : ''}`} 
                 />
               ) : (
-                <div className={`h-full w-full rounded-2xl flex items-center justify-center text-4xl shadow-sm border-2 ${localStudent.pet?.isDead ? 'bg-slate-100 border-slate-200' : 'bg-amber-50 border-amber-200'}`}>
+                <div className={`h-full w-full rounded-2xl flex items-center justify-center text-4xl shadow-sm border-2 ${localStudent.pet?.isDead ? 'bg-slate-100 border-slate-200' : 'bg-primary/10 border-primary/30'}`}>
                   {localStudent.pet?.image && !localStudent.pet.image.startsWith('http') && !localStudent.pet.image.startsWith('/') 
                     ? localStudent.pet.image 
                     : localStudent.pet 
@@ -248,11 +248,11 @@ export function StudentCard({ student }: StudentCardProps) {
               <div className="w-full pt-2">
                 <div className="flex items-center justify-between text-xs text-slate-500 mb-1.5 px-1">
                   <span className="font-medium">成长值</span>
-                  <span className="font-bold text-amber-600 text-sm">{localStudent.score}</span>
+                  <span className="font-bold text-primary text-sm">{localStudent.score}</span>
                 </div>
                 <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden shadow-inner">
                   <div 
-                    className="h-full bg-amber-400 transition-all duration-500 ease-out"
+                    className="h-full bg-primary transition-all duration-500 ease-out"
                     style={{ width: `${progressValue}%` }}
                   />
                 </div>

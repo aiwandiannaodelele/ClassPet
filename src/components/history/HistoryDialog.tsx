@@ -56,7 +56,7 @@ export function HistoryDialog({ open, onOpenChange, classId }: HistoryDialogProp
       learning: "bg-blue-500",
       behavior: "bg-purple-500",
       health: "bg-green-500",
-      other: "bg-amber-500",
+      other: "bg-primary",
     };
     return colors[category] || "bg-gray-500";
   };

@@ -64,7 +64,7 @@ export function HonorRollDialog({ open, onOpenChange, classId }: HonorRollDialog
           <div className="flex items-center justify-between">
             <div>
               <DialogTitle className="flex items-center gap-2 text-xl">
-                <Trophy className="w-6 h-6 text-amber-500" />
+                <Trophy className="w-6 h-6 text-primary" />
                 班级荣誉榜
               </DialogTitle>
               <DialogDescription className="mt-1.5">
@@ -105,7 +105,7 @@ export function HonorRollDialog({ open, onOpenChange, classId }: HonorRollDialog
               </TableHeader>
               <TableBody>
                 {students.slice(0, 10).map((student, index) => (
-                  <TableRow key={student.id} className={index < 3 ? "bg-amber-50/30" : ""}>
+                  <TableRow key={student.id} className={index < 3 ? "bg-primary/10/30" : ""}>
                     <TableCell>
                       <div className="flex items-center justify-center">
                         {index === 0 && <span className="text-3xl" title="宠物之星">👑</span>}
@@ -119,7 +119,7 @@ export function HonorRollDialog({ open, onOpenChange, classId }: HonorRollDialog
                     <TableCell className="font-medium text-base">
                       {student.name}
                       {index < 3 && period === "month" && (
-                        <Badge variant="secondary" className="ml-2 bg-amber-100 text-amber-800 hover:bg-amber-100">宠物之星</Badge>
+                        <Badge variant="secondary" className="ml-2 bg-primary/20 text-primary hover:bg-primary/20">宠物之星</Badge>
                       )}
                     </TableCell>
                     <TableCell>
@@ -141,7 +141,7 @@ export function HonorRollDialog({ open, onOpenChange, classId }: HonorRollDialog
                       )}
                     </TableCell>
                     <TableCell className="text-right">
-                      <span className="font-bold text-amber-600 text-lg">+{student.periodScore}</span>
+                      <span className="font-bold text-primary text-lg">+{student.periodScore}</span>
                     </TableCell>
                     <TableCell className="text-right">
                       <Badge variant="outline" className="bg-slate-50">
@@ -154,15 +154,15 @@ export function HonorRollDialog({ open, onOpenChange, classId }: HonorRollDialog
             </Table>
 
             {/* 关于徽章说明 */}
-            <Card className="mt-4 border bg-amber-50/50">
+            <Card className="mt-4 border bg-primary/10/50">
               <CardContent className="pt-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
                     <span className="text-lg">⭐</span>
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-1 text-amber-900">榜单规则</h4>
-                    <ul className="text-sm text-amber-800/80 list-disc ml-4 space-y-1">
+                    <h4 className="font-semibold mb-1 text-primary">榜单规则</h4>
+                    <ul className="text-sm text-primary/80 list-disc ml-4 space-y-1">
                       <li><strong>上榜条件</strong>：宠物必须存活。已阵亡的宠物将移出排行榜。</li>
                       <li><strong>积分统计</strong>：仅统计当前周期内（本周/本月/本学期）新增的<strong>正向加分</strong>，扣分不影响排名。</li>
                       <li><strong>宠物之星</strong>：月榜前 3 名将获得专属"宠物之星"荣誉称号。</li>

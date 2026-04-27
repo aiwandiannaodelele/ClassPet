@@ -48,7 +48,7 @@ export function LevelUpAnimation({ studentName, petName, newLevel, onAnimationCo
                 }}
                 className="absolute inset-0 origin-center"
               >
-                <div className="w-1 h-[200%] bg-amber-200 mx-auto" />
+                <div className="w-1 h-[200%] bg-primary/30 mx-auto" />
               </motion.div>
             ))}
           </div>
@@ -70,7 +70,7 @@ export function LevelUpAnimation({ studentName, petName, newLevel, onAnimationCo
                 repeat: Infinity,
                 repeatDelay: 1 + Math.random() * 2,
               }}
-              className="absolute text-amber-300 text-2xl"
+              className="absolute text-primary text-2xl"
             >
               ⭐
             </motion.div>
@@ -99,7 +99,7 @@ export function LevelUpAnimation({ studentName, petName, newLevel, onAnimationCo
               transition={{ delay: 0.3, duration: 0.5 }}
               className="mb-8"
             >
-              <h1 className="text-6xl font-bold text-amber-500 drop-shadow-sm">
+              <h1 className="text-6xl font-bold text-primary drop-shadow-sm">
                 升级啦！
               </h1>
             </motion.div>
@@ -119,7 +119,7 @@ export function LevelUpAnimation({ studentName, petName, newLevel, onAnimationCo
                   repeatDelay: 3,
                 }
               }}
-              className="w-48 h-48 mx-auto mb-6 rounded-full bg-amber-400 p-1 shadow-xl shadow-amber-500/20"
+              className="w-48 h-48 mx-auto mb-6 rounded-full bg-primary p-1 shadow-xl shadow-primary/20"
             >
               <div className="w-full h-full rounded-full bg-white flex items-center justify-center text-8xl">
                 🐕
@@ -148,9 +148,9 @@ export function LevelUpAnimation({ studentName, petName, newLevel, onAnimationCo
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1 }}
-              className="text-amber-200 text-lg mt-8"
+              className="text-primary/30 text-lg mt-8"
             >
-              恭喜 <span className="font-bold text-amber-300">{studentName}</span> 的宠物升到新等级！
+              恭喜 <span className="font-bold text-primary">{studentName}</span> 的宠物升到新等级！
             </motion.p>
           </motion.div>
         </motion.div>

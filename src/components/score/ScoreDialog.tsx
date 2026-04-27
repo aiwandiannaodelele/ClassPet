@@ -235,8 +235,8 @@ export function ScoreDialog({ open, onOpenChange, studentId, studentName, studen
                             </span>
                           </div>
                           <div className="flex items-center gap-1">
-                            <Star className="w-3.5 h-3.5 text-amber-500" />
-                            <span className="text-sm font-bold text-amber-600">{studentInfo.score}</span>
+                            <Star className="w-3.5 h-3.5 text-primary" />
+                            <span className="text-sm font-bold text-primary">{studentInfo.score}</span>
                           </div>
                           <div className="flex items-center gap-1">
                             <Trophy className="w-3.5 h-3.5 text-purple-500" />

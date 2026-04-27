@@ -250,7 +250,7 @@ export function StudentProfileDialog({
                 <div className="space-y-4 pt-2">
                   <div className="flex items-center justify-between">
                     <h3 className="text-2xl font-black text-slate-800">{student.name}</h3>
-                    <Badge className="bg-amber-500 hover:bg-amber-500 text-white font-bold px-3 py-1 rounded-lg border-none shadow-sm">
+                    <Badge className="bg-primary hover:bg-primary text-white font-bold px-3 py-1 rounded-lg border-none shadow-sm">
                       Lv.{student.pet?.level || 1}
                     </Badge>
                   </div>

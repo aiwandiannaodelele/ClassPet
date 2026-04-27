@@ -57,7 +57,7 @@ export default function RegisterPage() {
       <Card className="w-full max-w-md shadow-md border-slate-200">
         <CardHeader className="space-y-1 text-center">
           <div className="flex justify-center mb-4">
-            <div className="h-16 w-16 bg-amber-100 rounded-xl flex items-center justify-center text-3xl shadow-sm border border-amber-200">
+            <div className="h-16 w-16 bg-primary/20 rounded-xl flex items-center justify-center text-3xl shadow-sm border border-primary/30">
               🎓
             </div>
           </div>
@@ -111,13 +111,13 @@ export default function RegisterPage() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <Button type="submit" className="w-full bg-amber-500 hover:bg-amber-600 text-white" disabled={isLoading}>
+            <Button type="submit" className="w-full bg-primary hover:bg-primary text-white" disabled={isLoading}>
               {isLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
               注册账号
             </Button>
             <div className="text-center text-sm text-slate-500">
               已有账号？{" "}
-              <Link href="/login" className="text-amber-600 hover:underline font-medium">
+              <Link href="/login" className="text-primary hover:underline font-medium">
                 直接登录
               </Link>
             </div>

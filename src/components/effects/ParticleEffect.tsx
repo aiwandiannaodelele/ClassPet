@@ -19,9 +19,9 @@ interface ParticleEffectProps {
   type?: 'positive' | 'negative' | 'levelup';
 }
 
-const POSITIVE_COLORS = ['#fbbf24', '#f59e0b', '#34d399', '#10b981']; // Ambers and Emeralds
+const POSITIVE_COLORS = ['#f97316', '#ea580c', '#34d399', '#10b981']; // Primary/Orange and Emeralds
 const NEGATIVE_COLORS = ['#ef4444', '#f87171', '#94a3b8', '#64748b']; // Reds and Slates
-const LEVELUP_COLORS = ['#fbbf24', '#f59e0b', '#a855f7', '#8b5cf6', '#ec4899', '#f43f5e']; // Gold, Purple, Pink
+const LEVELUP_COLORS = ['#f97316', '#ea580c', '#a855f7', '#8b5cf6', '#ec4899', '#f43f5e']; // Primary, Purple, Pink
 
 export function ParticleEffect({ isActive, type = 'positive' }: ParticleEffectProps) {
   const [particles, setParticles] = useState<Particle[]>([]);

@@ -154,9 +154,9 @@ export default function StudentDetailClient({ student }: StudentDetailClientProp
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-slate-500">成长值</span>
-                <span className="font-bold text-amber-600">{student.score}</span>
+                <span className="font-bold text-primary">{student.score}</span>
               </div>
-              <Progress value={progressValue} className="h-2 bg-amber-100 [&>div]:bg-amber-500" />
+              <Progress value={progressValue} className="h-2 bg-primary/20 [&>div]:bg-primary" />
             </div>
 
             {student.pet && (
@@ -169,7 +169,7 @@ export default function StudentDetailClient({ student }: StudentDetailClientProp
                     </CardTitle>
                     <CardDescription className="text-xs">
                       重置后宠物等级归零，健康值恢复100，宠物保持不变。
-                      每次重置消耗 <span className="font-bold text-amber-600">{resetCost}</span> 成长值。
+                      每次重置消耗 <span className="font-bold text-primary">{resetCost}</span> 成长值。
                     </CardDescription>
                   </CardHeader>
                   <CardContent>

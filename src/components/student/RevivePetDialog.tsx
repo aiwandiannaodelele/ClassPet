@@ -129,7 +129,7 @@ export function RevivePetDialog({ open, onOpenChange, studentId, studentName, pe
               {reviveCount < 3 && (
                 <div className={`space-y-4 border p-4 rounded-md bg-slate-50 ${!canRevive ? 'opacity-50 pointer-events-none' : ''}`}>
                   <div className="grid gap-2">
-                    <Label className="font-medium text-amber-700">
+                    <Label className="font-medium text-primary">
                       自主回血 (可选)
                     </Label>
                     <p className="text-xs text-slate-500 mb-2">

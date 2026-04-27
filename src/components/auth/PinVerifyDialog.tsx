@@ -61,7 +61,7 @@ export function PinVerifyDialog({
       <DialogContent className="sm:max-w-[325px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Lock className="w-5 h-5 text-amber-500" />
+            <Lock className="w-5 h-5 text-primary" />
             {title}
           </DialogTitle>
           <DialogDescription>
@@ -84,7 +84,7 @@ export function PinVerifyDialog({
             />
           </div>
 
-          <Button type="submit" disabled={isLoading || pinCode.length < 4} className="w-full bg-amber-500 hover:bg-amber-600">
+          <Button type="submit" disabled={isLoading || pinCode.length < 4} className="w-full bg-primary hover:bg-primary">
             {isLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
             确认解锁
           </Button>

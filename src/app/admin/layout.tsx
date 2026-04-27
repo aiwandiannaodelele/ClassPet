@@ -21,7 +21,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <aside className="w-full md:w-64 bg-white border-r border-slate-200 flex flex-col">
         <div className="p-6 border-b border-slate-200">
           <h2 className="text-xl font-bold flex items-center gap-2">
-            <Settings className="w-5 h-5 text-amber-600" />
+            <Settings className="w-5 h-5 text-primary" />
             系统管理后台
           </h2>
         </div>

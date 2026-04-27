@@ -92,12 +92,12 @@ function ResetPasswordForm() {
           </div>
         </CardContent>
         <CardFooter className="flex flex-col space-y-4">
-          <Button type="submit" className="w-full bg-amber-500 hover:bg-amber-600 text-white" disabled={isLoading}>
+          <Button type="submit" className="w-full bg-primary hover:bg-primary text-white" disabled={isLoading}>
             {isLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
             更新密码
           </Button>
           <div className="text-center text-sm text-slate-500">
-            <Link href="/login" className="text-amber-600 hover:underline font-medium">
+            <Link href="/login" className="text-primary hover:underline font-medium">
               返回登录
             </Link>
           </div>
@@ -110,7 +110,7 @@ function ResetPasswordForm() {
 export default function ResetPasswordPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
-      <Suspense fallback={<div className="flex justify-center"><Loader2 className="w-8 h-8 animate-spin text-amber-500" /></div>}>
+      <Suspense fallback={<div className="flex justify-center"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div>}>
         <ResetPasswordForm />
       </Suspense>
     </div>
