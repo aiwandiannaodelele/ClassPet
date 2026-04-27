@@ -112,7 +112,7 @@ export function AccountSettingsDialog({ open, onOpenChange }: AccountSettingsDia
             <Loader2 className="w-6 h-6 animate-spin text-slate-400" />
           </div>
         ) : (
-          <Tabs defaultValue="profile" className="w-full mt-2 flex flex-col flex-1 overflow-hidden">
+          <Tabs defaultValue="profile" className="w-full mt-2 flex flex-col flex-1 overflow-hidden border-none outline-none">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="profile">个人资料</TabsTrigger>
               <TabsTrigger value="security">安全锁</TabsTrigger>

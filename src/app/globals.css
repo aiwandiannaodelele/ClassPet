@@ -131,7 +131,13 @@ body {
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
+    outline: none;
+  }
+  *:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+    ring: 0 !important;
   }
   body {
     @apply bg-background text-foreground;

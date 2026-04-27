@@ -96,7 +96,7 @@ function LoginForm() {
         <CardDescription>登录萌宠班级屋后台管理</CardDescription>
       </CardHeader>
       
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 pt-0">
         {(globalSettings?.enableGithubOAuth || globalSettings?.enableGoogleOAuth) && (
           <div className="grid grid-cols-2 gap-4">
             <Button 

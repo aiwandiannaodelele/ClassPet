@@ -306,7 +306,7 @@ export function StudentProfileDialog({
 
           {/* 右侧主内容区 */}
           <div className="flex-1 flex flex-col overflow-hidden bg-white min-h-0">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col flex-1 min-h-0">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col flex-1 min-h-0 border-none outline-none">
               <div className="px-8 pt-4 border-b shrink-0 bg-white">
                 <TabsList className="grid w-full grid-cols-3 h-10 mb-2">
                   <TabsTrigger value="feed" className="font-bold">
