@@ -30,7 +30,7 @@ export function SettingsDialog({ open, onOpenChange, classId }: SettingsDialogPr
         </DialogHeader>
 
         <Tabs defaultValue={classId ? "students" : "help"} className="mt-4 flex-1 flex flex-col min-h-0 border-none outline-none">
-          <TabsList className="grid w-full grid-cols-9 mb-4 shrink-0">
+          <TabsList className="flex flex-wrap w-full mb-4 shrink-0 h-auto justify-start">
             <TabsTrigger value="students" disabled={!classId}>学生名单</TabsTrigger>
             <TabsTrigger value="classParams" disabled={!classId}>班级参数</TabsTrigger>
             <TabsTrigger value="survivalParams" disabled={!classId}>生存惩罚</TabsTrigger>

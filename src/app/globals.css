@@ -131,12 +131,7 @@ body {
 
 @layer base {
   * {
-    @apply border-border;
-    outline: none;
-  }
-  *:focus-visible {
-    outline: none !important;
-    box-shadow: none !important;
+    @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
@@ -148,17 +143,38 @@ body {
 
 /* Override shadcn v4 preset defaults that break the layout or add ugly borders */
 @layer components {
-  /* Fix Card proportions and restore standard border/shadow instead of dark ring */
+  /* Fix Card proportions to match v3 behavior and restore standard border/shadow instead of dark ring */
   [data-slot="card"] {
+    display: flex !important;
+    flex-direction: column !important;
     padding: 0 !important;
     gap: 0 !important;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
     border: 1px solid var(--border) !important;
-    display: block !important;
+  }
+
+  [data-slot="card-header"] {
+    padding: 1.5rem !important;
+  }
+
+  [data-slot="card-content"] {
+    padding: 1.5rem !important;
+    padding-top: 0 !important;
+  }
+
+  [data-slot="card-footer"] {
+    padding: 1.5rem !important;
+    padding-top: 0 !important;
+    display: flex !important;
+    align-items: center !important;
   }
   
   /* Remove the dark ring from Dialog and restore standard border/shadow */
-  [data-slot="dialog-content"] {
+  [data-slot="dialog-content"],
+  [data-slot="dropdown-menu-content"],
+  [data-slot="popover-content"],
+  [data-slot="select-content"],
+  [data-slot="tooltip-content"] {
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
     border: 1px solid var(--border) !important;
   }
@@ -173,8 +189,16 @@ body {
     width: calc(100% - 2rem) !important;
   }
 
-  /* Only target the actual focus-visible for accessibility, but remove the ugly black default rings from preset */
-  [data-slot="card"], [data-slot="dialog-content"] {
+  /* Prevent TabsTrigger from shrinking and causing text to overlap */
+  [data-slot="tabs-trigger"] {
+    flex-shrink: 0 !important;
+  }
+  [data-slot="card"], 
+  [data-slot="dialog-content"],
+  [data-slot="dropdown-menu-content"],
+  [data-slot="popover-content"],
+  [data-slot="select-content"],
+  [data-slot="tooltip-content"] {
     --tw-ring-color: transparent !important;
     --tw-ring-shadow: 0 0 #0000 !important;
     --tw-ring-offset-shadow: 0 0 #0000 !important;
