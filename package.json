@@ -14,8 +14,11 @@
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@auth/core": "^0.41.2",
+    "@auth/prisma-adapter": "^2.11.2",
     "@hookform/resolvers": "^5.2.2",
     "@libsql/client": "^0.17.0",
+    "@marsidev/react-turnstile": "^1.5.1",
     "@prisma/client": "^5.22.0",
     "@radix-ui/react-alert-dialog": "^1.1.15",
     "@radix-ui/react-avatar": "^1.1.11",
@@ -39,7 +42,7 @@
     "framer-motion": "^12.36.0",
     "lucide-react": "^0.577.0",
     "next": "16.1.6",
-    "next-auth": "^5.0.0-beta.30",
+    "next-auth": "^5.0.0-beta.31",
     "next-themes": "^0.4.6",
     "pinyin-pro": "^3.28.0",
     "prisma": "^5.22.0",

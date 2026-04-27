@@ -1,19 +1,51 @@
 import { NextAuthConfig } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GitHubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
+import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 
 export const authOptions: NextAuthConfig = {
+  adapter: PrismaAdapter(prisma),
   providers: [
+    GitHubProvider({
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET,
+      allowDangerousEmailAccountLinking: true,
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
+      allowDangerousEmailAccountLinking: true,
+    }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email", placeholder: "teacher@example.com" },
-        password: { label: "Password", type: "password" }
+        password: { label: "Password", type: "password" },
+        turnstileToken: { label: "Turnstile Token", type: "text" }
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
           throw new Error("请输入邮箱和密码");
+        }
+
+        // Verify turnstile if enabled
+        const globalSettings = await prisma.systemSetting.findUnique({ where: { id: "global" } });
+        if (globalSettings?.enableTurnstile && globalSettings.turnstileSecretKey) {
+          if (!credentials.turnstileToken) {
+            throw new Error("请完成人机验证");
+          }
+          const verifyRes = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `secret=${globalSettings.turnstileSecretKey}&response=${credentials.turnstileToken}`,
+          });
+          const verifyData = await verifyRes.json();
+          if (!verifyData.success) {
+            throw new Error("人机验证失败");
+          }
         }
 
         const email = credentials.email as string;
@@ -23,8 +55,8 @@ export const authOptions: NextAuthConfig = {
           where: { email }
         });
 
-        if (!user) {
-          throw new Error("找不到该用户，请先注册");
+        if (!user || !user.password) {
+          throw new Error("找不到该用户或使用第三方登录");
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -33,8 +65,7 @@ export const authOptions: NextAuthConfig = {
           throw new Error("密码错误");
         }
 
-        // Avoid sending huge base64 strings in the JWT cookie
-        let safeImage = user.avatar;
+        let safeImage = user.avatar || user.image;
         if (safeImage && safeImage.startsWith('data:image')) {
           safeImage = "db-fetch-required";
         }
@@ -44,6 +75,7 @@ export const authOptions: NextAuthConfig = {
           email: user.email,
           name: user.name,
           image: safeImage,
+          role: user.role,
         };
       }
     })
@@ -57,17 +89,22 @@ export const authOptions: NextAuthConfig = {
       if (user) {
         token.id = user.id;
         token.picture = user.image;
+        token.role = (user as any).role || "USER";
       }
       
-      // Handle session updates (e.g., when updating profile)
+      // Allow passing role from DB if needed
+      if (token.id && !token.role) {
+        const dbUser = await prisma.user.findUnique({ where: { id: token.id as string } });
+        if (dbUser) {
+          token.role = dbUser.role;
+        }
+      }
+      
       if (trigger === "update" && session) {
         if (session.name) token.name = session.name;
-        // Do not update token.picture if it's a huge base64 string, to prevent Cookie bloat
-        // We will rely on the UI fetching it, or we just let it be if it's an emoji/url
         if (session.image && !session.image.startsWith('data:image')) {
           token.picture = session.image;
         } else if (session.image && session.image.startsWith('data:image')) {
-          // If they uploaded a base64 image, we flag it so the client knows to fetch from DB
           token.picture = "db-fetch-required";
         }
       }
@@ -78,19 +115,18 @@ export const authOptions: NextAuthConfig = {
       if (token && session.user) {
         (session.user as any).id = token.id;
         session.user.image = token.picture as string | null | undefined;
+        (session.user as any).role = token.role as string;
       }
       return session;
     }
   },
   pages: {
     signIn: "/login",
+    error: "/login",
   },
   secret: (() => {
     if (!process.env.NEXTAUTH_SECRET) {
-      if (process.env.NODE_ENV === "production") {
-        throw new Error("NEXTAUTH_SECRET environment variable is required in production");
-      }
-      console.warn("⚠️ Using fallback secret for development. Set NEXTAUTH_SECRET in production!");
+      console.warn("⚠️ Using fallback secret. Set NEXTAUTH_SECRET in production!");
       return "fallback_secret_for_dev_classpet_123";
     }
     return process.env.NEXTAUTH_SECRET;

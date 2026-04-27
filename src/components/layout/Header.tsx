@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useContext } from 'react';
 import { useRouter, useParams, usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -379,6 +380,14 @@ export function Header({ classes, onClassCreated, onSortChange, currentSort = 'n
                 <div className="px-2 py-1.5 text-sm font-medium text-slate-700 border-b mb-1">
                   {session?.user?.name || session?.user?.email || '未登录'}
                 </div>
+                {(session?.user as any)?.role === "ADMIN" && (
+                  <DropdownMenuItem className="cursor-pointer" asChild>
+                    <Link href="/admin">
+                      <Settings className="mr-2 h-4 w-4 text-amber-600" />
+                      进入系统管理后台
+                    </Link>
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuItem className="cursor-pointer" onClick={handleOpenAccountSettings}>
                   <Settings className="mr-2 h-4 w-4 text-slate-500" />
                   账号与安全设置
