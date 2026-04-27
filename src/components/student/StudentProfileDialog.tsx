@@ -237,7 +237,7 @@ export function StudentProfileDialog({
               </div>
             </div>
 
-            <ScrollArea className="flex-1">
+            <ScrollArea className="flex-1 min-h-0">
               <div className="p-6 space-y-6">
                 <div className="aspect-square flex items-center justify-center relative">
                   {student.pet?.image?.startsWith('http') || student.pet?.image?.startsWith('/') ? (
@@ -306,7 +306,7 @@ export function StudentProfileDialog({
 
           {/* 右侧主内容区 */}
           <div className="flex-1 flex flex-col overflow-hidden bg-white">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col h-full">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col h-full min-h-0">
               <div className="px-8 pt-4 border-b shrink-0 bg-white">
                 <TabsList className="grid w-full grid-cols-3 h-10 mb-2">
                   <TabsTrigger value="feed" className="font-bold">
@@ -324,7 +324,7 @@ export function StudentProfileDialog({
                 </TabsList>
               </div>
 
-              <TabsContent value="feed" className="flex-1 overflow-hidden m-0 flex flex-col bg-slate-50/30">
+              <TabsContent value="feed" className="flex-1 overflow-hidden m-0 flex flex-col bg-slate-50/30 min-h-0">
                 <div className="px-8 py-4 flex gap-2 overflow-x-auto no-scrollbar shrink-0">
                   <Button 
                     variant={selectedCategory === "all" ? "default" : "outline"} 
@@ -347,7 +347,7 @@ export function StudentProfileDialog({
                   ))}
                 </div>
 
-                <ScrollArea className="flex-1 px-8 pb-8">
+                <ScrollArea className="flex-1 min-h-0 px-8 pb-8">
                   <div className="grid grid-cols-4 gap-3">
                     {filteredPositiveRules.map(rule => (
                       <Button
@@ -372,7 +372,7 @@ export function StudentProfileDialog({
                 </ScrollArea>
               </TabsContent>
 
-              <TabsContent value="punish" className="flex-1 overflow-hidden m-0 flex flex-col bg-slate-50/30">
+              <TabsContent value="punish" className="flex-1 overflow-hidden m-0 flex flex-col bg-slate-50/30 min-h-0">
                 <div className="px-8 py-4 flex gap-2 overflow-x-auto no-scrollbar shrink-0">
                   <Button 
                     variant={selectedCategory === "all" ? "default" : "outline"} 
@@ -395,7 +395,7 @@ export function StudentProfileDialog({
                   ))}
                 </div>
 
-                <ScrollArea className="flex-1 px-8 pb-8">
+                <ScrollArea className="flex-1 min-h-0 px-8 pb-8">
                   <div className="grid grid-cols-4 gap-3">
                     {filteredNegativeRules.map(rule => (
                       <Button
@@ -420,8 +420,8 @@ export function StudentProfileDialog({
                 </ScrollArea>
               </TabsContent>
 
-              <TabsContent value="history" className="flex-1 overflow-hidden m-0 flex flex-col bg-slate-50/30">
-                <ScrollArea className="flex-1">
+              <TabsContent value="history" className="flex-1 overflow-hidden m-0 flex flex-col bg-slate-50/30 min-h-0">
+                <ScrollArea className="flex-1 min-h-0">
                   <div className="px-8 py-6 space-y-3">
                     {student.records?.map(record => (
                       <div key={record.id} className="flex items-center justify-between p-4 bg-white rounded-xl border-2 border-slate-100 hover:border-primary/20 transition-all">

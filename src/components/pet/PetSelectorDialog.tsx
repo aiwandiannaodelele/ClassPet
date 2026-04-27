@@ -76,8 +76,8 @@ export function PetSelectorDialog({ open, onOpenChange, studentId, studentName, 
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[80vh] flex flex-col">
-        <DialogHeader>
+      <DialogContent className="max-w-4xl max-h-[80vh] flex flex-col overflow-hidden">
+        <DialogHeader className="shrink-0">
           <DialogTitle className="flex items-center gap-2">
             <span>🐾</span>
             为 {studentName} 选择守护宠物

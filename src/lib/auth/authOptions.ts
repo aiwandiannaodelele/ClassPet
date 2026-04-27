@@ -6,19 +6,31 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 
+const oauthProviders = [
+  ...(process.env.GITHUB_ID && process.env.GITHUB_SECRET
+    ? [
+        GitHubProvider({
+          clientId: process.env.GITHUB_ID,
+          clientSecret: process.env.GITHUB_SECRET,
+          allowDangerousEmailAccountLinking: true,
+        }),
+      ]
+    : []),
+  ...(process.env.GOOGLE_ID && process.env.GOOGLE_SECRET
+    ? [
+        GoogleProvider({
+          clientId: process.env.GOOGLE_ID,
+          clientSecret: process.env.GOOGLE_SECRET,
+          allowDangerousEmailAccountLinking: true,
+        }),
+      ]
+    : []),
+];
+
 export const authOptions: NextAuthConfig = {
   adapter: PrismaAdapter(prisma),
   providers: [
-    GitHubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
-      allowDangerousEmailAccountLinking: true,
-    }),
-    GoogleProvider({
-      clientId: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_SECRET,
-      allowDangerousEmailAccountLinking: true,
-    }),
+    ...oauthProviders,
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -85,6 +97,13 @@ export const authOptions: NextAuthConfig = {
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   callbacks: {
+    async signIn({ account }) {
+      if (!account?.provider || account.provider === "credentials") return true;
+      const globalSettings = await prisma.systemSetting.findUnique({ where: { id: "global" } });
+      if (account.provider === "github") return !!globalSettings?.enableGithubOAuth;
+      if (account.provider === "google") return !!globalSettings?.enableGoogleOAuth;
+      return false;
+    },
     async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id;

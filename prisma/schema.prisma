@@ -79,6 +79,8 @@ model SystemSetting {
   enableTurnstile  Boolean @default(false)
   turnstileSiteKey String?
   turnstileSecretKey String?
+  enableGithubOAuth Boolean @default(false)
+  enableGoogleOAuth Boolean @default(false)
   updatedAt        DateTime @updatedAt
 }
 

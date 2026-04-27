@@ -4,21 +4,9 @@ import { auth } from "@/lib/auth/auth";
 export default auth((req) => {
   const isLoggedIn = !!req.auth;
   const isAuthPage = req.nextUrl.pathname.startsWith("/login") || req.nextUrl.pathname.startsWith("/register");
-  const isApiRoute = req.nextUrl.pathname.startsWith("/api");
-  const isAuthApiRoute = req.nextUrl.pathname.startsWith("/api/auth");
-
-  // Allow auth API routes (login, register, session)
-  if (isAuthApiRoute) {
-    return NextResponse.next();
-  }
 
   // Redirect unauthenticated users to login page
   if (!isLoggedIn && !isAuthPage) {
-    // If it's an API route, return 401 instead of redirecting
-    if (isApiRoute) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-    
     let from = req.nextUrl.pathname;
     if (req.nextUrl.search) {
       from += req.nextUrl.search;
@@ -45,6 +33,6 @@ export const config = {
      * - favicon.ico (favicon file)
      * - public files (images, etc)
      */
-    "/((?!_next/static|_next/image|favicon.ico|.*\\..*).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)",
   ],
 };

@@ -9,6 +9,8 @@ export async function GET() {
         enableEmailVerify: true,
         enableTurnstile: true,
         turnstileSiteKey: true,
+        enableGithubOAuth: true,
+        enableGoogleOAuth: true,
       },
     });
 
@@ -16,6 +18,8 @@ export async function GET() {
       return NextResponse.json({
         enableEmailVerify: false,
         enableTurnstile: false,
+        enableGithubOAuth: false,
+        enableGoogleOAuth: false,
       });
     }
 

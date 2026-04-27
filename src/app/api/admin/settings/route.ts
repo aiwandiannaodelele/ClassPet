@@ -10,7 +10,7 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { enableEmailVerify, enableTurnstile, turnstileSiteKey, turnstileSecretKey } = body;
+    const { enableEmailVerify, enableTurnstile, turnstileSiteKey, turnstileSecretKey, enableGithubOAuth, enableGoogleOAuth } = body;
 
     const updatedSettings = await prisma.systemSetting.upsert({
       where: { id: "global" },
@@ -19,6 +19,8 @@ export async function PUT(request: NextRequest) {
         enableTurnstile,
         turnstileSiteKey,
         turnstileSecretKey,
+        enableGithubOAuth,
+        enableGoogleOAuth,
       },
       create: {
         id: "global",
@@ -26,6 +28,8 @@ export async function PUT(request: NextRequest) {
         enableTurnstile,
         turnstileSiteKey,
         turnstileSecretKey,
+        enableGithubOAuth,
+        enableGoogleOAuth,
       },
     });
 

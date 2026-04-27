@@ -15,6 +15,8 @@ export function SettingsForm({ initialSettings }: { initialSettings: any }) {
     enableTurnstile: initialSettings.enableTurnstile || false,
     turnstileSiteKey: initialSettings.turnstileSiteKey || "",
     turnstileSecretKey: initialSettings.turnstileSecretKey || "",
+    enableGithubOAuth: initialSettings.enableGithubOAuth || false,
+    enableGoogleOAuth: initialSettings.enableGoogleOAuth || false,
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -46,7 +48,6 @@ export function SettingsForm({ initialSettings }: { initialSettings: any }) {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        {/* Email Verification */}
         <div className="flex items-center justify-between border-b pb-4">
           <div className="space-y-0.5">
             <Label className="text-base">邮箱验证码 (注册)</Label>
@@ -58,7 +59,33 @@ export function SettingsForm({ initialSettings }: { initialSettings: any }) {
           />
         </div>
 
-        {/* Turnstile */}
+        <div className="space-y-4 border-b pb-6">
+          <div className="space-y-1">
+            <Label className="text-base">OAuth 第三方登录</Label>
+            <p className="text-sm text-muted-foreground">开启后登录页显示第三方按钮（需配置服务端环境变量）</p>
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <Label className="text-base">启用 GitHub 登录</Label>
+              <p className="text-sm text-muted-foreground">需要配置 GITHUB_ID / GITHUB_SECRET</p>
+            </div>
+            <Switch
+              checked={settings.enableGithubOAuth}
+              onCheckedChange={(val) => setSettings({ ...settings, enableGithubOAuth: val })}
+            />
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <Label className="text-base">启用 Google 登录</Label>
+              <p className="text-sm text-muted-foreground">需要配置 GOOGLE_ID / GOOGLE_SECRET</p>
+            </div>
+            <Switch
+              checked={settings.enableGoogleOAuth}
+              onCheckedChange={(val) => setSettings({ ...settings, enableGoogleOAuth: val })}
+            />
+          </div>
+        </div>
+
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">

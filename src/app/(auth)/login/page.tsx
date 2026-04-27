@@ -16,6 +16,7 @@ function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const errorMsg = searchParams?.get("error");
+  const from = searchParams?.get("from") || "/";
   
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -60,7 +61,7 @@ function LoginForm() {
         toast.error(result.error);
       } else {
         toast.success("登录成功");
-        router.push("/");
+        router.push(from);
         router.refresh();
       }
     } catch (error) {
@@ -75,7 +76,7 @@ function LoginForm() {
     if (provider === 'google') setIsGoogleLoading(true);
     
     try {
-      await signIn(provider, { callbackUrl: '/' });
+      await signIn(provider, { callbackUrl: from });
     } catch (error) {
       toast.error(`使用 ${provider} 登录失败`);
       if (provider === 'github') setIsGithubLoading(false);
@@ -96,24 +97,26 @@ function LoginForm() {
       </CardHeader>
       
       <CardContent className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
-          <Button 
-            variant="outline" 
-            onClick={() => handleOAuthLogin('github')} 
-            disabled={isGithubLoading || isGoogleLoading || isLoading}
-          >
-            {isGithubLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Github className="w-4 h-4 mr-2" />}
-            Github
-          </Button>
-          <Button 
-            variant="outline" 
-            onClick={() => handleOAuthLogin('google')}
-            disabled={isGithubLoading || isGoogleLoading || isLoading}
-          >
-            {isGoogleLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Mail className="w-4 h-4 mr-2 text-red-500" />}
-            Google
-          </Button>
-        </div>
+        {(globalSettings?.enableGithubOAuth || globalSettings?.enableGoogleOAuth) && (
+          <div className="grid grid-cols-2 gap-4">
+            <Button 
+              variant="outline" 
+              onClick={() => handleOAuthLogin('github')} 
+              disabled={!globalSettings?.enableGithubOAuth || isGithubLoading || isGoogleLoading || isLoading}
+            >
+              {isGithubLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Github className="w-4 h-4 mr-2" />}
+              Github
+            </Button>
+            <Button 
+              variant="outline" 
+              onClick={() => handleOAuthLogin('google')}
+              disabled={!globalSettings?.enableGoogleOAuth || isGithubLoading || isGoogleLoading || isLoading}
+            >
+              {isGoogleLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Mail className="w-4 h-4 mr-2 text-red-500" />}
+              Google
+            </Button>
+          </div>
+        )}
         
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
@@ -146,7 +149,7 @@ function LoginForm() {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label htmlFor="password">密码</Label>
-              <Link href="#" className="text-xs text-amber-600 hover:underline">忘记密码?</Link>
+                <Link href="/forgot-password" className="text-xs text-amber-600 hover:underline">忘记密码?</Link>
             </div>
             <Input 
               id="password" 
