@@ -217,7 +217,7 @@ export function StudentCard({ student }: StudentCardProps) {
           )}
 
           <CardContent 
-            className="flex flex-col items-center justify-center p-5 pt-8 text-center bg-white h-full relative"
+            className="flex flex-col items-center justify-center p-5 text-center bg-white h-full relative w-full"
           >
             <ParticleEffect isActive={isAnimating} type={animationType} />
             

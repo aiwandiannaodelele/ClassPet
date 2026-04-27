@@ -299,11 +299,6 @@ export function RuleManagement({ classId }: RuleManagementProps) {
                           <p className={cn("text-lg font-bold", getScoreColor(rule.score))}>
                             {rule.score > 0 ? "+" : ""}{rule.score}
                           </p>
-                          {rule.limit && (
-                            <span className="text-xs text-muted-foreground">
-                              上限: {rule.limit}
-                            </span>
-                          )}
                         </div>
                       </div>
                       <div className="flex gap-1">
@@ -329,11 +324,6 @@ export function RuleManagement({ classId }: RuleManagementProps) {
                       </div>
                     </div>
                     <div className="flex items-center gap-2 mt-3 flex-wrap">
-                      <Badge variant="outline" className="text-xs">
-                        {rule.validPeriod === "daily" ? "每日" :
-                         rule.validPeriod === "weekly" ? "每周" :
-                         rule.validPeriod === "monthly" ? "每月" : "不限周期"}
-                      </Badge>
                       <Badge variant="secondary" className="text-[10px]">全部班级</Badge>
                     </div>
                   </CardContent>
@@ -554,7 +544,7 @@ function AddRuleDialog({ open, onOpenChange, classId, onSuccess, initialData, cu
               ))}
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4">
             <div className="grid gap-2">
               <Label>分数</Label>
               <Input
@@ -565,52 +555,6 @@ function AddRuleDialog({ open, onOpenChange, classId, onSuccess, initialData, cu
               <p className="text-xs text-muted-foreground">
                 正数为加分(喂食)，负数为扣分(惩罚)
               </p>
-            </div>
-            <div className="grid gap-2">
-              <Label>分数上限 (可选)</Label>
-              <Input
-                type="number"
-                placeholder="无上限"
-                value={limit}
-                onChange={(e) => setLimit(e.target.value === "" ? "" : Number(e.target.value))}
-              />
-            </div>
-          </div>
-          <div className="grid gap-2">
-            <Label>生效周期</Label>
-            <div className="flex gap-2">
-              <Button
-                type="button"
-                variant={validPeriod === "daily" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setValidPeriod("daily")}
-              >
-                每日
-              </Button>
-              <Button
-                type="button"
-                variant={validPeriod === "weekly" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setValidPeriod("weekly")}
-              >
-                每周
-              </Button>
-              <Button
-                type="button"
-                variant={validPeriod === "monthly" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setValidPeriod("monthly")}
-              >
-                每月
-              </Button>
-              <Button
-                type="button"
-                variant={validPeriod === "none" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setValidPeriod("none")}
-              >
-                不限
-              </Button>
             </div>
           </div>
         </div>

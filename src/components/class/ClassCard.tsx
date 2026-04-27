@@ -139,7 +139,7 @@ export function ClassCard({ classItem, onSettingsClick, onDelete }: ClassCardPro
         </DropdownMenu>
       </div>
 
-      <CardContent className="pt-8 pb-6 px-6">
+      <CardContent className="p-6">
         <div className="flex items-center gap-5">
           <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-amber-50 text-3xl shadow-sm border border-amber-200/50 overflow-hidden flex-shrink-0">
             {classItem.logo ? (

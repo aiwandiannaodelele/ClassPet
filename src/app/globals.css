@@ -159,7 +159,6 @@ body {
 
   [data-slot="card-content"] {
     padding: 1.5rem !important;
-    padding-top: 0 !important;
   }
 
   [data-slot="card-footer"] {
