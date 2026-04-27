@@ -168,9 +168,7 @@ export async function POST(
             isDead,
           };
           
-          if (finalScoreChange > 0) {
-            updateData.lastScoreAt = new Date();
-          }
+          updateData.lastScoreAt = new Date();
 
           await tx.pet.update({
             where: { id: student.pet.id },
