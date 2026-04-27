@@ -222,12 +222,12 @@ export function StudentProfileDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-5xl h-[85vh] p-0 gap-0 overflow-hidden bg-white shadow-2xl">
-        <DialogHeader className="sr-only">
+      <DialogContent className="max-w-5xl h-[85vh] p-0 gap-0 overflow-hidden bg-white shadow-2xl flex flex-col">
+        <DialogHeader className="sr-only shrink-0">
           <DialogTitle>学生档案 - {student.name}</DialogTitle>
         </DialogHeader>
         
-        <div className="flex h-full w-full">
+        <div className="flex flex-1 min-h-0 w-full">
           {/* 左侧边栏 */}
           <div className="w-[320px] flex-shrink-0 border-r bg-slate-50/30 flex flex-col">
             <div className="p-4 border-b bg-white flex items-center justify-between">
@@ -305,8 +305,8 @@ export function StudentProfileDialog({
           </div>
 
           {/* 右侧主内容区 */}
-          <div className="flex-1 flex flex-col overflow-hidden bg-white">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col h-full min-h-0">
+          <div className="flex-1 flex flex-col overflow-hidden bg-white min-h-0">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col flex-1 min-h-0">
               <div className="px-8 pt-4 border-b shrink-0 bg-white">
                 <TabsList className="grid w-full grid-cols-3 h-10 mb-2">
                   <TabsTrigger value="feed" className="font-bold">
