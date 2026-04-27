@@ -23,8 +23,6 @@
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
   --chart-1: oklch(0.879 0.169 91.605);
   --chart-2: oklch(0.769 0.188 70.08);
   --chart-3: oklch(0.666 0.179 58.318);
@@ -38,6 +36,8 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
 }
 
 .dark {
@@ -137,12 +137,46 @@ body {
   *:focus-visible {
     outline: none !important;
     box-shadow: none !important;
-    ring: 0 !important;
   }
   body {
     @apply bg-background text-foreground;
   }
   html {
     @apply font-sans;
+  }
+}
+
+/* Override shadcn v4 preset defaults that break the layout or add ugly borders */
+@layer components {
+  /* Fix Card proportions and restore standard border/shadow instead of dark ring */
+  [data-slot="card"] {
+    padding: 0 !important;
+    gap: 0 !important;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid var(--border) !important;
+    display: block !important;
+  }
+  
+  /* Remove the dark ring from Dialog and restore standard border/shadow */
+  [data-slot="dialog-content"] {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid var(--border) !important;
+  }
+  
+  /* Fix Dialog sizes which were broken by preset's sm:max-w-md */
+  [data-slot="dialog-content"].max-w-5xl {
+    max-width: 64rem !important;
+    width: calc(100% - 2rem) !important;
+  }
+  [data-slot="dialog-content"].max-w-6xl {
+    max-width: 72rem !important;
+    width: calc(100% - 2rem) !important;
+  }
+
+  /* Only target the actual focus-visible for accessibility, but remove the ugly black default rings from preset */
+  [data-slot="card"], [data-slot="dialog-content"] {
+    --tw-ring-color: transparent !important;
+    --tw-ring-shadow: 0 0 #0000 !important;
+    --tw-ring-offset-shadow: 0 0 #0000 !important;
   }
 }

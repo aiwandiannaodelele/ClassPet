@@ -9,6 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 import { triggerScoreUpEffect, triggerScoreDownEffect, triggerLevelUpEffect } from "@/lib/effects";
 import { playScoreUp, playScoreDown, playLevelUp, playError } from "@/lib/audio";
+import { cn } from "@/lib/utils";
 
 interface Rule {
   id: string;
@@ -243,7 +244,7 @@ export function ScoreDialog({ open, onOpenChange, studentId, studentName, studen
                           </div>
                         </div>
                         <div className="w-32">
-                          <Progress value={studentInfo.pet.health} className="h-2" indicatorClassName={studentInfo.pet.health > 20 ? "bg-green-500" : "bg-red-500"} />
+                          <Progress value={studentInfo.pet.health} className={cn("h-2", studentInfo.pet.health > 20 ? "[&>div]:bg-green-500" : "[&>div]:bg-red-500")} />
                         </div>
                       </div>
                     )}
