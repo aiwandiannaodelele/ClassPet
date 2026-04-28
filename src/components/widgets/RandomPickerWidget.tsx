@@ -75,13 +75,13 @@ export function RandomPickerWidget({ onClose, classId }: RandomPickerWidgetProps
           <div className="h-32 w-full flex items-center justify-center mb-4 bg-slate-50 rounded-xl border border-slate-100">
             {selectedStudent ? (
               <div className={`flex flex-col items-center gap-2 transition-all ${isPicking ? 'scale-110 blur-[1px]' : 'scale-100 blur-0'}`}>
-                <Avatar className="h-14 w-14 border-2 border-amber-200 shadow-sm">
+                <Avatar className="h-14 w-14 border-2 border-primary/30 shadow-sm">
                   {selectedStudent.pet?.image && !selectedStudent.pet.image.startsWith('http') && !selectedStudent.pet.image.startsWith('/') ? (
-                    <AvatarFallback className="bg-amber-100 text-2xl">{selectedStudent.pet.image}</AvatarFallback>
+                    <AvatarFallback className="bg-primary/20 text-2xl">{selectedStudent.pet.image}</AvatarFallback>
                   ) : selectedStudent.pet?.image ? (
                     <AvatarImage src={selectedStudent.pet.image} alt={selectedStudent.pet.name} className="object-cover" />
                   ) : (
-                    <AvatarFallback className="bg-amber-100">{selectedStudent.name.substring(0, 1)}</AvatarFallback>
+                    <AvatarFallback className="bg-primary/20">{selectedStudent.name.substring(0, 1)}</AvatarFallback>
                   )}
                 </Avatar>
                 <div className="text-center">
@@ -98,7 +98,7 @@ export function RandomPickerWidget({ onClose, classId }: RandomPickerWidgetProps
           </div>
 
           <Button 
-            className="w-full bg-amber-500 hover:bg-amber-600 text-white" 
+            className="w-full bg-primary hover:bg-primary text-white" 
             onClick={handlePick}
             disabled={isPicking || students.length === 0}
           >

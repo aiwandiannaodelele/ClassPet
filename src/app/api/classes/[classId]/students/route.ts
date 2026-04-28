@@ -75,9 +75,9 @@ export async function GET(
               daysAlreadyDecayed++;
             }
           }
-          daysAlreadyDecayed = Math.max(0, daysAlreadyDecayed - startDecayDay + 1);
+          daysAlreadyDecayed = Math.max(0, daysAlreadyDecayed - startDecayDay);
           
-          const totalDaysToDecay = Math.max(0, currentDay - startDecayDay + 1);
+          const totalDaysToDecay = Math.max(0, currentDay - startDecayDay);
           const newDaysToDecay = totalDaysToDecay - daysAlreadyDecayed;
           
           if (newDaysToDecay > 0) {

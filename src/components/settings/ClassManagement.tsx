@@ -134,7 +134,7 @@ export function ClassManagement({ classId }: ClassManagementProps) {
                       {student.pet?.image ? (
                         <AvatarImage src={student.pet.image} alt={student.name} />
                       ) : null}
-                      <AvatarFallback className="text-xs bg-amber-100">
+                      <AvatarFallback className="text-xs bg-primary/20">
                         {student.name.substring(0, 1)}
                       </AvatarFallback>
                     </Avatar>

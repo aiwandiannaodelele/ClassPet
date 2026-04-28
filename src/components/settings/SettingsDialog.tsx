@@ -21,16 +21,16 @@ interface SettingsDialogProps {
 export function SettingsDialog({ open, onOpenChange, classId }: SettingsDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
+      <DialogContent className="max-w-6xl max-h-[90vh] flex flex-col overflow-hidden">
+        <DialogHeader className="shrink-0">
           <DialogTitle className="flex items-center gap-2">
             <SettingsIcon className="w-5 h-5 text-slate-700" />
             班级设置与管理
           </DialogTitle>
         </DialogHeader>
 
-        <Tabs defaultValue={classId ? "students" : "help"} className="mt-4">
-          <TabsList className="grid w-full grid-cols-9 mb-4">
+        <Tabs defaultValue={classId ? "students" : "help"} className="mt-4 flex-1 flex flex-col min-h-0 border-none outline-none">
+          <TabsList className="flex flex-wrap w-full mb-4 shrink-0 h-auto justify-start">
             <TabsTrigger value="students" disabled={!classId}>学生名单</TabsTrigger>
             <TabsTrigger value="classParams" disabled={!classId}>班级参数</TabsTrigger>
             <TabsTrigger value="survivalParams" disabled={!classId}>生存惩罚</TabsTrigger>
@@ -42,7 +42,8 @@ export function SettingsDialog({ open, onOpenChange, classId }: SettingsDialogPr
             <TabsTrigger value="about">关于软件</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="students" className="m-0">
+          <div className="flex-1 overflow-y-auto min-h-0 pr-2">
+            <TabsContent value="students" className="m-0">
             {classId ? <ClassManagement classId={classId} /> : null}
           </TabsContent>
 
@@ -77,6 +78,7 @@ export function SettingsDialog({ open, onOpenChange, classId }: SettingsDialogPr
           <TabsContent value="about" className="m-0">
             <AboutSection />
           </TabsContent>
+          </div>
         </Tabs>
       </DialogContent>
     </Dialog>

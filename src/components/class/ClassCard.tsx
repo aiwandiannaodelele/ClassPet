@@ -100,11 +100,11 @@ export function ClassCard({ classItem, onSettingsClick, onDelete }: ClassCardPro
     <>
       <Card
       key={classItem.id}
-      className="cursor-pointer transition-all duration-200 hover:border-amber-400 group relative rounded-xl border-slate-200/60 overflow-hidden bg-white/90 backdrop-blur-md shadow-sm hover:shadow-md"
+      className="cursor-pointer transition-all duration-200 hover:border-primary group relative rounded-xl border-slate-200/60 overflow-hidden bg-white/90 backdrop-blur-md shadow-sm hover:shadow-md"
       onClick={handleClassClick}
     >
       {/* Decorative gradient top border */}
-      <div className="absolute top-0 left-0 w-full h-1 bg-amber-400 opacity-80 group-hover:opacity-100 transition-opacity" />
+      <div className="absolute top-0 left-0 w-full h-1 bg-primary opacity-80 group-hover:opacity-100 transition-opacity" />
 
       <div className="absolute right-3 top-4 z-10" onClick={(e) => e.stopPropagation()}>
         <DropdownMenu>
@@ -139,9 +139,9 @@ export function ClassCard({ classItem, onSettingsClick, onDelete }: ClassCardPro
         </DropdownMenu>
       </div>
 
-      <CardContent className="pt-8 pb-6 px-6">
+      <CardContent className="p-6">
         <div className="flex items-center gap-5">
-          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-amber-50 text-3xl shadow-sm border border-amber-200/50 overflow-hidden flex-shrink-0">
+          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-3xl shadow-sm border border-primary/30/50 overflow-hidden flex-shrink-0">
             {classItem.logo ? (
               classItem.logo.startsWith('http') || classItem.logo.startsWith('/') || classItem.logo.startsWith('data:') ? (
                 <img src={classItem.logo} alt="logo" className="h-full w-full object-cover" />

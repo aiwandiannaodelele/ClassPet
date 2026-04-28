@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useContext } from 'react';
 import { useRouter, useParams, usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -225,7 +226,7 @@ export function Header({ classes, onClassCreated, onSortChange, currentSort = 'n
   return (
     <>
       {/* Bottom Navigation Bar */}
-      <footer className="fixed bottom-0 left-0 right-0 z-50 w-full bg-white shadow-[0_-4px_15px_-3px_rgba(0,0,0,0.05)] border-t border-amber-100 flex flex-col">
+      <footer className="fixed bottom-0 left-0 right-0 z-50 w-full bg-white shadow-[0_-4px_15px_-3px_rgba(0,0,0,0.05)] border-t border-primary/20 flex flex-col">
         {/* Tier 1: Sub-navigation */}
         <div className="flex items-center justify-between px-4 h-12 border-b border-slate-50 bg-slate-50/50">
           {/* Left: Back / Class Selector */}
@@ -235,7 +236,7 @@ export function Header({ classes, onClassCreated, onSortChange, currentSort = 'n
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="text-slate-500 hover:text-amber-600 hover:bg-amber-50 rounded-full h-8 px-3 transition-colors"
+                  className="text-slate-500 hover:text-primary hover:bg-primary/10 rounded-full h-8 px-3 transition-colors"
                   onClick={() => router.push('/')}
                 >
                   <ArrowLeft className="h-4 w-4 mr-1" />
@@ -245,7 +246,7 @@ export function Header({ classes, onClassCreated, onSortChange, currentSort = 'n
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    className="h-8 text-xs text-slate-500 hover:text-amber-600 border-dashed rounded-full animate-in fade-in slide-in-from-left-4"
+                    className="h-8 text-xs text-slate-500 hover:text-primary border-dashed rounded-full animate-in fade-in slide-in-from-left-4"
                     onClick={handleQuickUndo}
                   >
                     <Undo className="h-3.5 w-3.5 mr-1" />
@@ -261,8 +262,8 @@ export function Header({ classes, onClassCreated, onSortChange, currentSort = 'n
             <div className="flex justify-center w-1/3">
               <Tabs value={currentView} className="w-[200px]" onValueChange={(v) => onViewChange?.(v)}>
                 <TabsList className="grid w-full grid-cols-2 h-8">
-                  <TabsTrigger value="students" className="text-xs data-[state=active]:bg-amber-500 data-[state=active]:text-white rounded-full">学生</TabsTrigger>
-                  <TabsTrigger value="groups" className="text-xs data-[state=active]:bg-amber-500 data-[state=active]:text-white rounded-full">小组</TabsTrigger>
+                  <TabsTrigger value="students" className="text-xs data-[state=active]:bg-primary data-[state=active]:text-white rounded-full">学生</TabsTrigger>
+                  <TabsTrigger value="groups" className="text-xs data-[state=active]:bg-primary data-[state=active]:text-white rounded-full">小组</TabsTrigger>
                 </TabsList>
               </Tabs>
             </div>
@@ -273,21 +274,21 @@ export function Header({ classes, onClassCreated, onSortChange, currentSort = 'n
             <div className="flex items-center justify-end gap-2 w-1/3">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" type="button" className="h-8 w-8 p-0 rounded-full text-slate-500 hover:bg-amber-50 hover:text-amber-600" title="卡片大小">
+                  <Button variant="ghost" size="sm" type="button" className="h-8 w-8 p-0 rounded-full text-slate-500 hover:bg-primary/10 hover:text-primary" title="卡片大小">
                     <Grid className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" side="top" sideOffset={8}>
                   <DropdownMenuItem onClick={() => setCardSize('small')} className="cursor-pointer">
-                    <div className={`w-2 h-2 rounded-full mr-2 ${cardSize === 'small' ? 'bg-amber-500' : 'bg-transparent'}`} />
+                    <div className={`w-2 h-2 rounded-full mr-2 ${cardSize === 'small' ? 'bg-primary' : 'bg-transparent'}`} />
                     小卡片 (紧凑)
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => setCardSize('medium')} className="cursor-pointer">
-                    <div className={`w-2 h-2 rounded-full mr-2 ${cardSize === 'medium' ? 'bg-amber-500' : 'bg-transparent'}`} />
+                    <div className={`w-2 h-2 rounded-full mr-2 ${cardSize === 'medium' ? 'bg-primary' : 'bg-transparent'}`} />
                     中卡片 (标准)
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => setCardSize('large')} className="cursor-pointer">
-                    <div className={`w-2 h-2 rounded-full mr-2 ${cardSize === 'large' ? 'bg-amber-500' : 'bg-transparent'}`} />
+                    <div className={`w-2 h-2 rounded-full mr-2 ${cardSize === 'large' ? 'bg-primary' : 'bg-transparent'}`} />
                     大卡片 (宽敞)
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -295,7 +296,7 @@ export function Header({ classes, onClassCreated, onSortChange, currentSort = 'n
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" type="button" className="h-8 rounded-full text-slate-500 font-normal hover:bg-amber-50 hover:text-amber-600">
+                  <Button variant="ghost" size="sm" type="button" className="h-8 rounded-full text-slate-500 font-normal hover:bg-primary/10 hover:text-primary">
                     <span className="flex items-center justify-center w-4 h-4 rounded-full bg-slate-200 text-[10px] mr-1">
                       {currentSort === 'student-id' ? '#' : currentSort?.includes('score') ? 'S' : currentSort?.includes('level') ? 'L' : 'A'}
                     </span>
@@ -312,7 +313,7 @@ export function Header({ classes, onClassCreated, onSortChange, currentSort = 'n
                     姓名拼音
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => onSortChange?.('score-desc')} className="cursor-pointer">
-                    <Star className="mr-2 h-4 w-4 text-amber-500" />
+                    <Star className="mr-2 h-4 w-4 text-primary" />
                     分数降序
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => onSortChange?.('score-asc')} className="cursor-pointer">
@@ -320,7 +321,7 @@ export function Header({ classes, onClassCreated, onSortChange, currentSort = 'n
                     分数升序
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => onSortChange?.('level-desc')} className="cursor-pointer">
-                    <Trophy className="mr-2 h-4 w-4 text-amber-600" />
+                    <Trophy className="mr-2 h-4 w-4 text-primary" />
                     等级排序
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -332,7 +333,7 @@ export function Header({ classes, onClassCreated, onSortChange, currentSort = 'n
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="查找学生(支持拼音)"
-                  className="h-8 w-32 md:w-48 rounded-full border-none bg-white px-3 py-1 pl-8 text-sm placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-amber-400 shadow-sm transition-all"
+                  className="h-8 w-32 md:w-48 rounded-full border-none bg-white px-3 py-1 pl-8 text-sm placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-primary shadow-sm transition-all"
                 />
                 <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
               </div>
@@ -345,15 +346,15 @@ export function Header({ classes, onClassCreated, onSortChange, currentSort = 'n
           {/* Left Actions */}
           <div className="flex items-center gap-6 text-slate-500">
             {classId && (
-              <button type="button" onClick={handleOpenSettings} className="flex flex-col items-center gap-1 hover:text-amber-600 transition-colors group">
-                <div className="p-1 rounded-full group-hover:bg-amber-50 transition-colors"><Settings className="h-5 w-5" /></div>
+              <button type="button" onClick={handleOpenSettings} className="flex flex-col items-center gap-1 hover:text-primary transition-colors group">
+                <div className="p-1 rounded-full group-hover:bg-primary/10 transition-colors"><Settings className="h-5 w-5" /></div>
                 <span className="text-[10px] font-medium">班级设置</span>
               </button>
             )}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button type="button" className="flex flex-col items-center gap-1 hover:text-amber-600 transition-colors group">
-                  <div className="p-1 rounded-full group-hover:bg-amber-50 transition-colors h-7 w-7 flex items-center justify-center overflow-hidden">
+                <button type="button" className="flex flex-col items-center gap-1 hover:text-primary transition-colors group">
+                  <div className="p-1 rounded-full group-hover:bg-primary/10 transition-colors h-7 w-7 flex items-center justify-center overflow-hidden">
                     {mounted && session?.user?.image ? (
                       session.user.image === "db-fetch-required" ? (
                         userSettings?.avatar ? (
@@ -379,6 +380,14 @@ export function Header({ classes, onClassCreated, onSortChange, currentSort = 'n
                 <div className="px-2 py-1.5 text-sm font-medium text-slate-700 border-b mb-1">
                   {session?.user?.name || session?.user?.email || '未登录'}
                 </div>
+                {(session?.user as any)?.role === "ADMIN" && (
+                  <DropdownMenuItem className="cursor-pointer" asChild>
+                    <Link href="/admin">
+                      <Settings className="mr-2 h-4 w-4 text-primary" />
+                      进入系统管理后台
+                    </Link>
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuItem className="cursor-pointer" onClick={handleOpenAccountSettings}>
                   <Settings className="mr-2 h-4 w-4 text-slate-500" />
                   账号与安全设置
@@ -395,37 +404,37 @@ export function Header({ classes, onClassCreated, onSortChange, currentSort = 'n
           <div className="flex items-center gap-8 text-slate-600">
             {!classId ? (
               // Actions when NO class is selected (Home page)
-              <button onClick={() => setShowCreateDialog(true)} className="flex flex-col items-center gap-1 hover:text-amber-600 transition-colors group">
-                <div className="p-1.5 rounded-full bg-amber-50 text-amber-600 group-hover:bg-amber-100 transition-colors shadow-sm"><Plus className="h-6 w-6" /></div>
-                <span className="text-[12px] font-medium text-amber-600">创建班级</span>
+              <button onClick={() => setShowCreateDialog(true)} className="flex flex-col items-center gap-1 hover:text-primary transition-colors group">
+                <div className="p-1.5 rounded-full bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors shadow-sm"><Plus className="h-6 w-6" /></div>
+                <span className="text-[12px] font-medium text-primary">创建班级</span>
               </button>
             ) : (
               // Actions when a class IS selected
               <>
-                <button onClick={() => setShowHistory(true)} className="flex flex-col items-center gap-1 hover:text-amber-600 transition-colors group">
-                <div className="p-1.5 rounded-full group-hover:bg-amber-50 transition-colors"><PieChart className="h-5 w-5" /></div>
+                <button onClick={() => setShowHistory(true)} className="flex flex-col items-center gap-1 hover:text-primary transition-colors group">
+                <div className="p-1.5 rounded-full group-hover:bg-primary/10 transition-colors"><PieChart className="h-5 w-5" /></div>
                 <span className="text-[11px] font-medium">班级报表</span>
               </button>
-              <button type="button" onClick={handleOpenBatchScore} className={`flex flex-col items-center gap-1 transition-colors group ${isMultiSelectMode ? 'text-amber-600' : 'hover:text-amber-600'}`}>
-                <div className={`p-1.5 rounded-full transition-colors shadow-sm ${isMultiSelectMode ? 'bg-amber-100' : 'group-hover:bg-amber-50'}`}><CheckSquare className="h-5 w-5" /></div>
+              <button type="button" onClick={handleOpenBatchScore} className={`flex flex-col items-center gap-1 transition-colors group ${isMultiSelectMode ? 'text-primary' : 'hover:text-primary'}`}>
+                <div className={`p-1.5 rounded-full transition-colors shadow-sm ${isMultiSelectMode ? 'bg-primary/20' : 'group-hover:bg-primary/10'}`}><CheckSquare className="h-5 w-5" /></div>
                 <span className="text-[11px] font-medium">{isMultiSelectMode ? '取消多选' : '多选'}</span>
               </button>
-              <button onClick={() => setShowStore(true)} className="flex flex-col items-center gap-1 hover:text-amber-600 transition-colors group">
-                <div className="p-1.5 rounded-full group-hover:bg-amber-50 transition-colors"><Gift className="h-5 w-5" /></div>
+              <button onClick={() => setShowStore(true)} className="flex flex-col items-center gap-1 hover:text-primary transition-colors group">
+                <div className="p-1.5 rounded-full group-hover:bg-primary/10 transition-colors"><Gift className="h-5 w-5" /></div>
                 <span className="text-[11px] font-medium">奖励兑换</span>
               </button>
-              <button onClick={() => setShowRandomPicker(!showRandomPicker)} className="flex flex-col items-center gap-1 hover:text-amber-600 transition-colors group">
-                <div className="p-1.5 rounded-full group-hover:bg-amber-50 transition-colors"><Dices className="h-5 w-5" /></div>
+              <button onClick={() => setShowRandomPicker(!showRandomPicker)} className="flex flex-col items-center gap-1 hover:text-primary transition-colors group">
+                <div className="p-1.5 rounded-full group-hover:bg-primary/10 transition-colors"><Dices className="h-5 w-5" /></div>
                 <span className="text-[11px] font-medium">随机</span>
               </button>
-              <button onClick={() => setShowTimer(!showTimer)} className="flex flex-col items-center gap-1 hover:text-amber-600 transition-colors group">
-                <div className="p-1.5 rounded-full group-hover:bg-amber-50 transition-colors"><Timer className="h-5 w-5" /></div>
+              <button onClick={() => setShowTimer(!showTimer)} className="flex flex-col items-center gap-1 hover:text-primary transition-colors group">
+                <div className="p-1.5 rounded-full group-hover:bg-primary/10 transition-colors"><Timer className="h-5 w-5" /></div>
                 <span className="text-[11px] font-medium">计时器</span>
               </button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button type="button" className="flex flex-col items-center gap-1 hover:text-amber-600 transition-colors group">
-                    <div className="p-1.5 rounded-full group-hover:bg-amber-50 transition-colors"><Wrench className="h-5 w-5" /></div>
+                  <button type="button" className="flex flex-col items-center gap-1 hover:text-primary transition-colors group">
+                    <div className="p-1.5 rounded-full group-hover:bg-primary/10 transition-colors"><Wrench className="h-5 w-5" /></div>
                     <span className="text-[11px] font-medium">小工具</span>
                   </button>
                 </DropdownMenuTrigger>
@@ -443,9 +452,9 @@ export function Header({ classes, onClassCreated, onSortChange, currentSort = 'n
           {/* Right Actions */}
           <div className="flex items-center gap-4 text-slate-500">
             {classId && (
-              <button onClick={() => setShowHonorRoll(true)} className="flex flex-col items-center gap-1 hover:text-amber-600 transition-colors group">
-                <div className="p-1 rounded-full group-hover:bg-amber-50 text-amber-500 transition-colors"><Trophy className="h-6 w-6" /></div>
-                <span className="text-[10px] font-medium text-amber-600">光荣榜</span>
+              <button onClick={() => setShowHonorRoll(true)} className="flex flex-col items-center gap-1 hover:text-primary transition-colors group">
+                <div className="p-1 rounded-full group-hover:bg-primary/10 text-primary transition-colors"><Trophy className="h-6 w-6" /></div>
+                <span className="text-[10px] font-medium text-primary">光荣榜</span>
               </button>
             )}
           </div>

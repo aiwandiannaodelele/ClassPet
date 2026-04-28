@@ -113,8 +113,8 @@ export function ChoosePetDialog({ open, onOpenChange, studentId, studentName, on
               key={index}
               className={`flex flex-col items-center justify-center p-2 rounded-xl cursor-pointer transition-all border-2 ${
                 selectedPet?.name === pet.name
-                  ? "border-amber-500 bg-amber-50 scale-105 shadow-md"
-                  : "border-transparent hover:border-amber-200 hover:bg-slate-50"
+                  ? "border-primary bg-primary/10 scale-105 shadow-md"
+                  : "border-transparent hover:border-primary/30 hover:bg-slate-50"
               }`}
               onClick={() => setSelectedPet(pet)}
             >

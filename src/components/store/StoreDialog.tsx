@@ -223,7 +223,7 @@ export function StoreDialog({ open, onOpenChange, classId }: StoreDialogProps) {
                 <DialogHeader className="flex flex-row items-center justify-between pb-4 border-b">
                   <div className="space-y-1">
                     <DialogTitle className="text-xl font-bold flex items-center gap-2">
-                      <ShoppingBag className="w-5 h-5 text-amber-500" />
+                      <ShoppingBag className="w-5 h-5 text-primary" />
                       宠物小商店
                     </DialogTitle>
                     <DialogDescription>
@@ -285,7 +285,7 @@ export function StoreDialog({ open, onOpenChange, classId }: StoreDialogProps) {
                                 <p className="text-xs text-muted-foreground line-clamp-1">{product.description || "暂无描述"}</p>
                               </div>
                               <div className="flex items-center justify-between mt-2">
-                                <div className="flex items-center gap-1 text-amber-600 font-bold">
+                                <div className="flex items-center gap-1 text-primary font-bold">
                                   <Coins className="w-4 h-4" />
                                   <span>{product.price}</span>
                                 </div>
@@ -323,7 +323,7 @@ export function StoreDialog({ open, onOpenChange, classId }: StoreDialogProps) {
                                 </div>
                               </div>
                             </div>
-                            <div className="text-amber-600 font-bold text-sm">-{record.product?.price} 币</div>
+                            <div className="text-primary font-bold text-sm">-{record.product?.price} 币</div>
                           </div>
                         ))
                       )}
@@ -339,7 +339,7 @@ export function StoreDialog({ open, onOpenChange, classId }: StoreDialogProps) {
                       <ChevronLeft className="w-4 h-4" />
                     </Button>
                     <DialogTitle className="text-lg font-bold">
-                      给学生兑换: <span className="text-amber-600">{selectedProduct?.name}</span>
+                      给学生兑换: <span className="text-primary">{selectedProduct?.name}</span>
                     </DialogTitle>
                   </div>
                   <div className="relative w-48">
@@ -373,7 +373,7 @@ export function StoreDialog({ open, onOpenChange, classId }: StoreDialogProps) {
                           </Avatar>
                           <div className="text-center min-w-0 w-full">
                             <div className="text-xs font-bold truncate">{student.name}</div>
-                            <div className={`text-[10px] ${canAfford ? 'text-amber-600' : 'text-red-500'} font-medium`}>成长值: {student.score}</div>
+                            <div className={`text-[10px] ${canAfford ? 'text-primary' : 'text-red-500'} font-medium`}>成长值: {student.score}</div>
                           </div>
                           {isSelected && <div className="absolute top-1 right-1"><Check className="w-3 h-3 text-primary" /></div>}
                         </div>

@@ -112,7 +112,7 @@ export function AccountSettingsDialog({ open, onOpenChange }: AccountSettingsDia
             <Loader2 className="w-6 h-6 animate-spin text-slate-400" />
           </div>
         ) : (
-          <Tabs defaultValue="profile" className="w-full mt-2 flex flex-col flex-1 overflow-hidden">
+          <Tabs defaultValue="profile" className="w-full mt-2 flex flex-col flex-1 overflow-hidden border-none outline-none">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="profile">个人资料</TabsTrigger>
               <TabsTrigger value="security">安全锁</TabsTrigger>
@@ -215,14 +215,14 @@ export function AccountSettingsDialog({ open, onOpenChange }: AccountSettingsDia
                     value={pinCode}
                     onChange={(e) => setPinCode(e.target.value.replace(/[^0-9]/g, ''))}
                   />
-                  <p className="text-xs text-amber-600">如果之前已经设置过且不想修改，请留空。</p>
+                  <p className="text-xs text-primary">如果之前已经设置过且不想修改，请留空。</p>
                 </div>
               )}
             </TabsContent>
 
             <div className="flex justify-end gap-3 pt-4 border-t mt-4">
               <Button variant="outline" onClick={() => onOpenChange(false)}>取消</Button>
-              <Button onClick={handleSave} disabled={isLoading} className="bg-amber-500 hover:bg-amber-600">
+              <Button onClick={handleSave} disabled={isLoading} className="bg-primary hover:bg-primary">
                 {isLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
                 保存设置
               </Button>

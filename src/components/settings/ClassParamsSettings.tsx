@@ -168,7 +168,7 @@ export function ClassParamsSettings({ classId, showOnly }: ClassParamsSettingsPr
       {/* Top right auto-save status indicator */}
       <div className="absolute top-0 right-4 flex items-center gap-2 text-sm">
         {savingStatus === 'saving' && (
-          <span className="text-amber-600 flex items-center gap-1">
+          <span className="text-primary flex items-center gap-1">
             <Loader2 className="w-4 h-4 animate-spin" /> 保存中...
           </span>
         )}

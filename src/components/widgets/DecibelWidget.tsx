@@ -82,7 +82,7 @@ export function DecibelWidget({ onClose }: { onClose: () => void }) {
   // Determine color based on volume (Green -> Yellow -> Red)
   const getVolumeColor = () => {
     if (volume < 30) return "bg-green-500";
-    if (volume < 70) return "bg-amber-500";
+    if (volume < 70) return "bg-primary";
     return "bg-red-500";
   };
 
