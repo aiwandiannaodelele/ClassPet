@@ -177,7 +177,7 @@ export function StudentProfileDialog({
       return;
     }
 
-    if (!confirm(`确定要重新选择宠物领养吗？将消耗 ${resetCost} 点成长值，且当前宠物等级归零。`)) return;
+    if (!confirm(`确定要重新领养宠物吗？将消耗 ${resetCost} 点成长值，宠物将变为未领养状态。`)) return;
 
     setIsResetting(true);
     try {
@@ -186,11 +186,12 @@ export function StudentProfileDialog({
       });
 
       if (res.ok) {
-        toast.success("宠物已重置，请重新领养");
-        // We need to notify parent to show ChoosePetDialog
+        const data = await res.json().catch(() => ({}));
+        toast.success("宠物已重置，请关闭弹窗后点击蛋重新领养");
+        if (data?.student) {
+          window.dispatchEvent(new CustomEvent('student-updated', { detail: { studentId, student: data.student } }));
+        }
         onOpenChange(false);
-        // Dispatch a custom event that StudentCard can listen to
-        window.dispatchEvent(new CustomEvent('pet-reset-triggered', { detail: { studentId } }));
       } else {
         const data = await res.json();
         toast.error(data.error || "重置失败");
@@ -286,7 +287,7 @@ export function StudentProfileDialog({
                       <span className="text-xs font-bold">重新领养宠物</span>
                     </div>
                     <p className="text-[10px] text-slate-500 leading-relaxed">
-                      重新选择宠物将保留当前成长值，但宠物等级将归零。
+                      重新领养会让宠物变为未领养状态，需要点击蛋重新选择宠物。
                     </p>
                     <Button 
                       variant="destructive" 

@@ -41,6 +41,7 @@ export function GroupScoreDialog({ open, onOpenChange, groupId, groupName, class
   const [rules, setRules] = useState<Rule[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [activeTab, setActiveTab] = useState<"feed" | "penalty">("feed");
 
   useEffect(() => {
     if (open) {
@@ -121,9 +122,14 @@ export function GroupScoreDialog({ open, onOpenChange, groupId, groupName, class
     ? negativeRules
     : negativeRules.filter((r) => r.category === selectedCategory);
 
+  const setTabAndResetCategory = (tab: "feed" | "penalty") => {
+    setActiveTab(tab);
+    setSelectedCategory("all");
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl bg-white">
+      <DialogContent className="max-w-4xl h-[80vh] flex flex-col overflow-hidden bg-white">
         <DialogHeader>
           <DialogTitle>给小组评分</DialogTitle>
           <DialogDescription>
@@ -131,14 +137,14 @@ export function GroupScoreDialog({ open, onOpenChange, groupId, groupName, class
           </DialogDescription>
         </DialogHeader>
 
-        <Tabs defaultValue="feed" className="w-full mt-4">
-          <TabsList className="grid w-full grid-cols-2">
+        <Tabs value={activeTab} onValueChange={(v) => setTabAndResetCategory(v as any)} className="w-full flex-1 min-h-0 mt-4">
+          <TabsList className="!grid !w-full grid-cols-2 shrink-0">
             <TabsTrigger value="feed" className="text-green-600 data-[state=active]:text-green-700">喂食 (加分)</TabsTrigger>
             <TabsTrigger value="penalty" className="text-orange-600 data-[state=active]:text-orange-700">惩罚 (扣分)</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="feed" className="mt-4">
-            <div className="flex gap-2 mb-4 overflow-x-auto pb-2">
+          <TabsContent value="feed" className="mt-4 flex-1 min-h-0 flex flex-col">
+            <div className="flex gap-2 mb-4 overflow-x-auto pb-2 shrink-0">
               <Button
                 variant={selectedCategory === "all" ? "default" : "outline"}
                 size="sm"
@@ -160,8 +166,8 @@ export function GroupScoreDialog({ open, onOpenChange, groupId, groupName, class
               ))}
             </div>
 
-            <ScrollArea className="h-[400px] pr-4">
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            <ScrollArea className="flex-1 min-h-0 pr-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 pb-1">
                 {filteredPositiveRules.length > 0 ? filteredPositiveRules.map((rule) => (
                   <Button
                     key={rule.id}
@@ -192,8 +198,8 @@ export function GroupScoreDialog({ open, onOpenChange, groupId, groupName, class
             </ScrollArea>
           </TabsContent>
 
-          <TabsContent value="penalty" className="mt-4">
-            <div className="flex gap-2 mb-4 overflow-x-auto pb-2">
+          <TabsContent value="penalty" className="mt-4 flex-1 min-h-0 flex flex-col">
+            <div className="flex gap-2 mb-4 overflow-x-auto pb-2 shrink-0">
               <Button
                 variant={selectedCategory === "all" ? "default" : "outline"}
                 size="sm"
@@ -215,8 +221,8 @@ export function GroupScoreDialog({ open, onOpenChange, groupId, groupName, class
               ))}
             </div>
 
-            <ScrollArea className="h-[400px] pr-4">
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            <ScrollArea className="flex-1 min-h-0 pr-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 pb-1">
                 {filteredNegativeRules.length > 0 ? filteredNegativeRules.map((rule) => (
                   <Button
                     key={rule.id}

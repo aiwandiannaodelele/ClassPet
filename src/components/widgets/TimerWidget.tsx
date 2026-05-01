@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { X, Play, Square, RotateCcw, Timer, Plus, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export function TimerWidget({ onClose }: { onClose: () => void }) {
@@ -105,7 +104,7 @@ export function TimerWidget({ onClose }: { onClose: () => void }) {
       exit={{ opacity: 0, scale: 0.9 }}
       className="fixed z-50 shadow-xl top-24 right-24 cursor-move"
     >
-      <Card className="w-[360px] overflow-hidden border-2 border-primary/20 bg-white flex flex-col rounded-xl">
+      <div className="w-[360px] overflow-hidden border-2 border-primary/20 bg-white flex flex-col rounded-xl">
         <div className="bg-primary/10/50 px-3 py-2 flex justify-between items-center border-b border-primary/20">
           <span className="font-semibold text-sm text-primary flex items-center gap-2">
             <Timer className="w-4 h-4 text-primary" />
@@ -116,11 +115,11 @@ export function TimerWidget({ onClose }: { onClose: () => void }) {
           </Button>
         </div>
         
-        <div className="p-4 flex flex-col items-center justify-center cursor-default">
+        <div className="p-4 pb-6 flex flex-col items-center justify-center cursor-default relative">
           
           {/* Top Toggle */}
           <Tabs defaultValue="countdown" onValueChange={(v) => handleModeChange(v as any)} className="w-48 mb-6">
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList className="!grid !w-full grid-cols-2">
               <TabsTrigger value="countdown">倒计时</TabsTrigger>
               <TabsTrigger value="stopwatch">秒表</TabsTrigger>
             </TabsList>
@@ -163,7 +162,7 @@ export function TimerWidget({ onClose }: { onClose: () => void }) {
             <Button 
               variant="outline" 
               size="icon"
-              className="h-10 w-10 rounded-full border-slate-200 text-slate-500 hover:text-primary hover:border-primary/30 hover:bg-primary/10 absolute right-6 bottom-6" 
+              className="h-10 w-10 rounded-full border-slate-200 text-slate-500 hover:text-primary hover:border-primary/30 hover:bg-primary/10 absolute right-4 bottom-4" 
               onClick={resetTimer}
               title="重置"
             >
@@ -171,7 +170,7 @@ export function TimerWidget({ onClose }: { onClose: () => void }) {
             </Button>
           </div>
         </div>
-      </Card>
+      </div>
     </motion.div>
   );
 }

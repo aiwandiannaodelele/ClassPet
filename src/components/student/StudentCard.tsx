@@ -53,13 +53,13 @@ export function StudentCard({ student }: StudentCardProps) {
   }, [student]);
 
   useEffect(() => {
-    const handlePetResetTriggered = (e: any) => {
-      if (e.detail.studentId === localStudent.id) {
-        setShowPetDialog(true);
+    const handleStudentUpdated = (e: any) => {
+      if (e.detail.studentId === localStudent.id && e.detail.student) {
+        setLocalStudent(e.detail.student);
       }
     };
-    window.addEventListener('pet-reset-triggered', handlePetResetTriggered);
-    return () => window.removeEventListener('pet-reset-triggered', handlePetResetTriggered);
+    window.addEventListener('student-updated', handleStudentUpdated);
+    return () => window.removeEventListener('student-updated', handleStudentUpdated);
   }, [localStudent.id]);
 
   useEffect(() => {

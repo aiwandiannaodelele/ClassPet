@@ -74,7 +74,7 @@ export function ChoosePetDialog({ open, onOpenChange, studentId, studentName, on
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="max-w-3xl h-[80vh] flex flex-col overflow-hidden">
         <DialogHeader>
           <DialogTitle>为 {studentName} 选择守护宠物</DialogTitle>
           <DialogDescription>
@@ -82,53 +82,55 @@ export function ChoosePetDialog({ open, onOpenChange, studentId, studentName, on
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex gap-2 overflow-x-auto pb-2 border-b my-4">
-          <Button
-            variant={selectedCategory === "all" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setSelectedCategory("all")}
-            className="whitespace-nowrap"
-          >
-            全部 ({PET_IMAGES.length})
-          </Button>
-          {PET_CATEGORIES.map((cat) => {
-            const count = PET_IMAGES.filter(p => p.category === cat.id).length;
-            return (
-              <Button
-                key={cat.id}
-                variant={selectedCategory === cat.id ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedCategory(cat.id)}
-                className="whitespace-nowrap"
-              >
-                {cat.emoji} {cat.name}({count})
-              </Button>
-            );
-          })}
-        </div>
-
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4 p-4">
-          {filteredPets.map((pet, index) => (
-            <div
-              key={index}
-              className={`flex flex-col items-center justify-center p-2 rounded-xl cursor-pointer transition-all border-2 ${
-                selectedPet?.name === pet.name
-                  ? "border-primary bg-primary/10 scale-105 shadow-md"
-                  : "border-transparent hover:border-primary/30 hover:bg-slate-50"
-              }`}
-              onClick={() => setSelectedPet(pet)}
+        <div className="flex-1 min-h-0 overflow-y-auto">
+          <div className="flex gap-2 overflow-x-auto pb-2 border-b px-1">
+            <Button
+              variant={selectedCategory === "all" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSelectedCategory("all")}
+              className="whitespace-nowrap"
             >
-              <div className="h-16 w-16 mb-2 flex items-center justify-center">
-                <img src={pet.imageUrl} alt={pet.name} className="h-full w-full object-contain drop-shadow-sm" />
+              全部 ({PET_IMAGES.length})
+            </Button>
+            {PET_CATEGORIES.map((cat) => {
+              const count = PET_IMAGES.filter(p => p.category === cat.id).length;
+              return (
+                <Button
+                  key={cat.id}
+                  variant={selectedCategory === cat.id ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSelectedCategory(cat.id)}
+                  className="whitespace-nowrap"
+                >
+                  {cat.emoji} {cat.name}({count})
+                </Button>
+              );
+            })}
+          </div>
+
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4 p-4">
+            {filteredPets.map((pet, index) => (
+              <div
+                key={index}
+                className={`flex flex-col items-center justify-center p-2 rounded-xl cursor-pointer transition-all border-2 ${
+                  selectedPet?.name === pet.name
+                    ? "border-primary bg-primary/10 scale-105 shadow-md"
+                    : "border-transparent hover:border-primary/30 hover:bg-slate-50"
+                }`}
+                onClick={() => setSelectedPet(pet)}
+              >
+                <div className="h-16 w-16 mb-2 flex items-center justify-center">
+                  <img src={pet.imageUrl} alt={pet.name} className="h-full w-full object-contain drop-shadow-sm" />
+                </div>
+                <span className="text-xs text-center font-medium text-slate-700">
+                  {pet.name}
+                </span>
               </div>
-              <span className="text-xs text-center font-medium text-slate-700">
-                {pet.name}
-              </span>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
-        <DialogFooter className="mt-4">
+        <DialogFooter className="shrink-0">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             取消
           </Button>

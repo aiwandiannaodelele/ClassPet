@@ -46,3 +46,8 @@ prisma/dev.db-journal
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local reports / diffs
+diff*.txt
+report*.md
+generate_report.py

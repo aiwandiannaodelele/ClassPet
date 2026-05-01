@@ -63,10 +63,11 @@ export function RevivePetDialog({ open, onOpenChange, studentId, studentName, pe
         method: "POST",
       });
 
-      if (!response.ok) throw new Error("重置失败");
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || "重置失败");
 
       toast.success("旧数据已清除，请重新领养");
-      onSuccess();
+      onSuccess(data.student);
       onOpenChange(false);
     } catch (error) {
       console.error("Failed to reset pet:", error);

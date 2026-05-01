@@ -28,7 +28,7 @@ export async function POST(
 
     const resetCost = student.class.petResetCost ?? 20;
 
-    if (student.score < resetCost) {
+    if (!student.pet.isDead && student.score < resetCost) {
       return NextResponse.json(
         { error: `成长值不足，重置宠物需要 ${resetCost} 点成长值` },
         { status: 400 }
@@ -55,28 +55,31 @@ export async function POST(
       penaltyEndDate.setDate(penaltyEndDate.getDate() + penaltyDays);
     }
 
-    await prisma.pet.update({
-      where: { id: student.pet.id },
-      data: {
-        level: 1,
-        health: 100,
-        experience: 0,
-        isDead: false,
-        reviveCount: 0,
-        lastReviveAt: null,
-        lastScoreAt: new Date(),
-      },
+    const isDead = student.pet.isDead;
+    const petId = student.pet.id;
+
+    const updatedStudent = await prisma.$transaction(async (tx) => {
+      await tx.pet.delete({ where: { id: petId } });
+
+      await tx.student.update({
+        where: { id: studentId },
+        data: {
+          score: isDead ? 0 : { decrement: resetCost },
+          penaltyEndDate: penaltyEndDate,
+        },
+      });
+
+      return tx.student.findUnique({
+        where: { id: studentId },
+        include: { pet: true },
+      });
     });
 
-    await prisma.student.update({
-      where: { id: studentId },
-      data: {
-        score: { decrement: resetCost },
-        penaltyEndDate: penaltyEndDate,
-      },
-    });
+    if (!updatedStudent) {
+      return NextResponse.json({ error: "Student not found" }, { status: 404 });
+    }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, student: updatedStudent });
   } catch (error) {
     console.error("Error resetting pet:", error);
     return NextResponse.json(
