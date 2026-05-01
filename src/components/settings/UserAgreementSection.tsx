@@ -157,7 +157,7 @@ export function UserAgreementSection() {
       </Card>
 
       <div className="text-center text-xs text-slate-400 mt-4">
-        最后更新：{new Date().toLocaleDateString('zh-CN')}
+        最后更新：2026/4/28
       </div>
     </div>
   );

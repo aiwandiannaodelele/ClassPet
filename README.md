@@ -59,7 +59,7 @@ Students adopt and raise virtual pets, while teachers adjust points based on dai
 Ensure your server has Node.js (v20+) and PM2 installed.
 
 ### 2. Configure Environment Variables
-Create a `.env` file in the root directory:
+在服务器管理系统中配置环境变量即可（也可以使用项目根目录的 `.env` 文件）：
 ```env
 DATABASE_URL="file:./dev.db"
 NEXTAUTH_SECRET="your-random-secret-key"

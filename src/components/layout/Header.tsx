@@ -384,7 +384,7 @@ export function Header({ classes, onClassCreated, onSortChange, currentSort = 'n
                   <DropdownMenuItem className="cursor-pointer" asChild>
                     <Link href="/admin">
                       <Settings className="mr-2 h-4 w-4 text-primary" />
-                      进入系统管理后台
+                      进入管理系统
                     </Link>
                   </DropdownMenuItem>
                 )}

@@ -1,36 +1,26 @@
 import { NextAuthConfig } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GitHubProvider from "next-auth/providers/github";
-import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 
-const oauthProviders = [
-  ...(process.env.GITHUB_ID && process.env.GITHUB_SECRET
-    ? [
-        GitHubProvider({
-          clientId: process.env.GITHUB_ID,
-          clientSecret: process.env.GITHUB_SECRET,
-          allowDangerousEmailAccountLinking: true,
-        }),
-      ]
-    : []),
-  ...(process.env.GOOGLE_ID && process.env.GOOGLE_SECRET
-    ? [
-        GoogleProvider({
-          clientId: process.env.GOOGLE_ID,
-          clientSecret: process.env.GOOGLE_SECRET,
-          allowDangerousEmailAccountLinking: true,
-        }),
-      ]
-    : []),
-];
+export async function getAuthOptions(): Promise<NextAuthConfig> {
+  const globalSettings = await prisma.systemSetting.findUnique({ where: { id: "global" } });
+  const githubClientId = globalSettings?.githubClientId || "";
+  const githubClientSecret = globalSettings?.githubClientSecret || "";
+  const enableGithubOAuth = !!globalSettings?.enableGithubOAuth && !!githubClientId && !!githubClientSecret;
 
-export const authOptions: NextAuthConfig = {
-  adapter: PrismaAdapter(prisma),
-  providers: [
-    ...oauthProviders,
+  const providers: NextAuthConfig["providers"] = [
+    ...(enableGithubOAuth
+      ? [
+          GitHubProvider({
+            clientId: githubClientId,
+            clientSecret: githubClientSecret,
+            allowDangerousEmailAccountLinking: true,
+          }),
+        ]
+      : []),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -91,63 +81,65 @@ export const authOptions: NextAuthConfig = {
         };
       }
     })
-  ],
-  session: {
-    strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 days
-  },
-  callbacks: {
-    async signIn({ account }) {
-      if (!account?.provider || account.provider === "credentials") return true;
-      const globalSettings = await prisma.systemSetting.findUnique({ where: { id: "global" } });
-      if (account.provider === "github") return !!globalSettings?.enableGithubOAuth;
-      if (account.provider === "google") return !!globalSettings?.enableGoogleOAuth;
-      return false;
+  ];
+
+  return {
+    adapter: PrismaAdapter(prisma),
+    providers,
+    session: {
+      strategy: "jwt",
+      maxAge: 30 * 24 * 60 * 60,
     },
-    async jwt({ token, user, trigger, session }) {
-      if (user) {
-        token.id = user.id;
-        token.picture = user.image;
-        token.role = (user as any).role || "USER";
-      }
-      
-      // Allow passing role from DB if needed
-      if (token.id && !token.role) {
-        const dbUser = await prisma.user.findUnique({ where: { id: token.id as string } });
-        if (dbUser) {
-          token.role = dbUser.role;
+    callbacks: {
+      async signIn({ account }) {
+        if (!account?.provider || account.provider === "credentials") return true;
+        if (account.provider === "github") return enableGithubOAuth;
+        return false;
+      },
+      async jwt({ token, user, trigger, session }) {
+        if (user) {
+          token.id = user.id;
+          token.picture = user.image;
+          token.role = (user as any).role || "USER";
         }
-      }
-      
-      if (trigger === "update" && session) {
-        if (session.name) token.name = session.name;
-        if (session.image && !session.image.startsWith('data:image')) {
-          token.picture = session.image;
-        } else if (session.image && session.image.startsWith('data:image')) {
-          token.picture = "db-fetch-required";
+
+        if (token.id && !token.role) {
+          const dbUser = await prisma.user.findUnique({ where: { id: token.id as string } });
+          if (dbUser) {
+            token.role = dbUser.role;
+          }
         }
-      }
-      
-      return token;
+
+        if (trigger === "update" && session) {
+          if (session.name) token.name = session.name;
+          if (session.image && !session.image.startsWith("data:image")) {
+            token.picture = session.image;
+          } else if (session.image && session.image.startsWith("data:image")) {
+            token.picture = "db-fetch-required";
+          }
+        }
+
+        return token;
+      },
+      async session({ session, token }) {
+        if (token && session.user) {
+          (session.user as any).id = token.id;
+          session.user.image = token.picture as string | null | undefined;
+          (session.user as any).role = token.role as string;
+        }
+        return session;
+      },
     },
-    async session({ session, token }) {
-      if (token && session.user) {
-        (session.user as any).id = token.id;
-        session.user.image = token.picture as string | null | undefined;
-        (session.user as any).role = token.role as string;
+    pages: {
+      signIn: "/login",
+      error: "/login",
+    },
+    secret: (() => {
+      if (!process.env.NEXTAUTH_SECRET) {
+        console.warn("⚠️ Using fallback secret. Set NEXTAUTH_SECRET in production!");
+        return "fallback_secret_for_dev_classpet_123";
       }
-      return session;
-    }
-  },
-  pages: {
-    signIn: "/login",
-    error: "/login",
-  },
-  secret: (() => {
-    if (!process.env.NEXTAUTH_SECRET) {
-      console.warn("⚠️ Using fallback secret. Set NEXTAUTH_SECRET in production!");
-      return "fallback_secret_for_dev_classpet_123";
-    }
-    return process.env.NEXTAUTH_SECRET;
-  })(),
-};
+      return process.env.NEXTAUTH_SECRET;
+    })(),
+  };
+}

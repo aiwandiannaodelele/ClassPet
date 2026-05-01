@@ -11,7 +11,7 @@ export default async function AdminDashboard() {
   return (
     <div className="p-8 space-y-6">
       <h1 className="text-3xl font-bold">仪表盘</h1>
-      <p className="text-muted-foreground">欢迎进入系统管理后台。</p>
+      <p className="text-muted-foreground">欢迎进入管理系统。</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card>

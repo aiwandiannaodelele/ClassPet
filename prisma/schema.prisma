@@ -76,11 +76,19 @@ model VerificationToken {
 model SystemSetting {
   id               String  @id @default("global")
   enableEmailVerify Boolean @default(false)
+  enablePasswordReset Boolean @default(false)
   enableTurnstile  Boolean @default(false)
   turnstileSiteKey String?
   turnstileSecretKey String?
   enableGithubOAuth Boolean @default(false)
-  enableGoogleOAuth Boolean @default(false)
+  githubClientId   String?
+  githubClientSecret String?
+  smtpHost         String?
+  smtpPort         Int?
+  smtpSecure       Boolean @default(false)
+  smtpUser         String?
+  smtpPass         String?
+  smtpFrom         String?
   updatedAt        DateTime @updatedAt
 }
 

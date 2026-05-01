@@ -27,7 +27,7 @@ export function AboutSection() {
           <div className="py-2 border-b border-slate-100">
             <span className="block text-slate-500 font-medium mb-2">技术架构</span>
             <ul className="list-disc pl-5 space-y-1 text-sm text-slate-700">
-              <li>前端：Next.js 15, React, TailwindCSS, shadcn/ui</li>
+              <li>前端：Next.js 16, React, TailwindCSS, shadcn/ui</li>
               <li>后端：Next.js App Router, Prisma ORM</li>
               <li>数据库：SQLite / PostgreSQL</li>
             </ul>

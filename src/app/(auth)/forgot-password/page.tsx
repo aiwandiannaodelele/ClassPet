@@ -8,8 +8,10 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function ForgotPasswordPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [devResetUrl, setDevResetUrl] = useState<string | null>(null);
@@ -32,6 +34,10 @@ export default function ForgotPasswordPage() {
       toast.success("如果该邮箱存在，将收到重置密码指引");
       if (data.resetUrl) setDevResetUrl(data.resetUrl);
     } catch (error: any) {
+      if (typeof error?.message === "string" && error.message.includes("功能未开启")) {
+        router.replace("/login");
+        return;
+      }
       toast.error(error.message || "请求失败");
     } finally {
       setIsLoading(false);
@@ -84,4 +90,3 @@ export default function ForgotPasswordPage() {
     </div>
   );
 }
-

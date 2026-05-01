@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import Link from "next/link";
-import { Loader2, Github, Mail, ShieldAlert } from "lucide-react";
+import { Loader2, Github, ShieldAlert } from "lucide-react";
 import { Turnstile } from '@marsidev/react-turnstile';
 
 function LoginForm() {
@@ -22,7 +22,6 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isGithubLoading, setIsGithubLoading] = useState(false);
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   
   // Settings state
   const [globalSettings, setGlobalSettings] = useState<any>(null);
@@ -71,16 +70,14 @@ function LoginForm() {
     }
   };
 
-  const handleOAuthLogin = async (provider: 'github' | 'google') => {
-    if (provider === 'github') setIsGithubLoading(true);
-    if (provider === 'google') setIsGoogleLoading(true);
+  const handleOAuthLogin = async () => {
+    setIsGithubLoading(true);
     
     try {
-      await signIn(provider, { callbackUrl: from });
+      await signIn('github', { callbackUrl: from });
     } catch (error) {
-      toast.error(`使用 ${provider} 登录失败`);
-      if (provider === 'github') setIsGithubLoading(false);
-      if (provider === 'google') setIsGoogleLoading(false);
+      toast.error("使用 github 登录失败");
+      setIsGithubLoading(false);
     }
   };
 
@@ -93,27 +90,19 @@ function LoginForm() {
           </div>
         </div>
         <CardTitle className="text-2xl font-bold">欢迎回来</CardTitle>
-        <CardDescription>登录萌宠班级屋后台管理</CardDescription>
+        <CardDescription>登录萌宠班级屋</CardDescription>
       </CardHeader>
       
       <CardContent className="space-y-4 pt-0">
-        {(globalSettings?.enableGithubOAuth || globalSettings?.enableGoogleOAuth) && (
-          <div className="grid grid-cols-2 gap-4">
+        {globalSettings?.enableGithubOAuth && globalSettings?.githubOAuthConfigured && (
+          <div className="grid grid-cols-1 gap-4">
             <Button 
               variant="outline" 
-              onClick={() => handleOAuthLogin('github')} 
-              disabled={!globalSettings?.enableGithubOAuth || isGithubLoading || isGoogleLoading || isLoading}
+              onClick={handleOAuthLogin} 
+              disabled={!globalSettings?.enableGithubOAuth || isGithubLoading || isLoading}
             >
               {isGithubLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Github className="w-4 h-4 mr-2" />}
               Github
-            </Button>
-            <Button 
-              variant="outline" 
-              onClick={() => handleOAuthLogin('google')}
-              disabled={!globalSettings?.enableGoogleOAuth || isGithubLoading || isGoogleLoading || isLoading}
-            >
-              {isGoogleLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Mail className="w-4 h-4 mr-2 text-red-500" />}
-              Google
             </Button>
           </div>
         )}
@@ -149,7 +138,11 @@ function LoginForm() {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label htmlFor="password">密码</Label>
-                <Link href="/forgot-password" className="text-xs text-primary hover:underline">忘记密码?</Link>
+              {globalSettings?.enablePasswordReset ? (
+                <Link href="/forgot-password" className="text-xs text-primary hover:underline">
+                  忘记密码?
+                </Link>
+              ) : null}
             </div>
             <Input 
               id="password" 

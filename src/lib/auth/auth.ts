@@ -1,4 +1,4 @@
 import NextAuth from "next-auth";
-import { authOptions } from "./authOptions";
+import { getAuthOptions } from "./authOptions";
 
-export const { handlers, auth, signIn, signOut } = NextAuth(authOptions);
+export const { handlers, auth, signIn, signOut } = NextAuth(async () => await getAuthOptions());

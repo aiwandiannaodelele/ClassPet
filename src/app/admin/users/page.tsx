@@ -2,6 +2,9 @@ import { prisma } from "@/lib/prisma";
 import { UserList } from "./UserList";
 
 export default async function AdminUsersPage() {
+  const settings = await prisma.systemSetting.findUnique({ where: { id: "global" } });
+  const enablePasswordReset = !!settings?.enablePasswordReset;
+
   const users = await prisma.user.findMany({
     select: {
       id: true,
@@ -21,7 +24,7 @@ export default async function AdminUsersPage() {
       <h1 className="text-3xl font-bold">用户管理</h1>
       <p className="text-muted-foreground">管理系统中的所有教师账号和管理员。</p>
       
-      <UserList initialUsers={users} />
+      <UserList initialUsers={users} enablePasswordReset={enablePasswordReset} />
     </div>
   );
 }

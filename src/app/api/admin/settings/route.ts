@@ -10,26 +10,57 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { enableEmailVerify, enableTurnstile, turnstileSiteKey, turnstileSecretKey, enableGithubOAuth, enableGoogleOAuth } = body;
+    const {
+      enableEmailVerify,
+      enablePasswordReset,
+      enableTurnstile,
+      turnstileSiteKey,
+      turnstileSecretKey,
+      enableGithubOAuth,
+      githubClientId,
+      githubClientSecret,
+      smtpHost,
+      smtpPort,
+      smtpSecure,
+      smtpUser,
+      smtpPass,
+      smtpFrom,
+    } = body;
 
     const updatedSettings = await prisma.systemSetting.upsert({
       where: { id: "global" },
       update: {
         enableEmailVerify,
+        enablePasswordReset,
         enableTurnstile,
         turnstileSiteKey,
         turnstileSecretKey,
         enableGithubOAuth,
-        enableGoogleOAuth,
+        githubClientId,
+        githubClientSecret,
+        smtpHost,
+        smtpPort,
+        smtpSecure,
+        smtpUser,
+        smtpPass,
+        smtpFrom,
       },
       create: {
         id: "global",
         enableEmailVerify,
+        enablePasswordReset,
         enableTurnstile,
         turnstileSiteKey,
         turnstileSecretKey,
         enableGithubOAuth,
-        enableGoogleOAuth,
+        githubClientId,
+        githubClientSecret,
+        smtpHost,
+        smtpPort,
+        smtpSecure,
+        smtpUser,
+        smtpPass,
+        smtpFrom,
       },
     });
 

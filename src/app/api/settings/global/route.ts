@@ -7,23 +7,41 @@ export async function GET() {
       where: { id: "global" },
       select: {
         enableEmailVerify: true,
+        enablePasswordReset: true,
         enableTurnstile: true,
         turnstileSiteKey: true,
         enableGithubOAuth: true,
-        enableGoogleOAuth: true,
+        githubClientId: true,
+        githubClientSecret: true,
+        smtpHost: true,
+        smtpPort: true,
+        smtpFrom: true,
       },
     });
 
     if (!settings) {
       return NextResponse.json({
         enableEmailVerify: false,
+        enablePasswordReset: false,
         enableTurnstile: false,
         enableGithubOAuth: false,
-        enableGoogleOAuth: false,
+        githubOAuthConfigured: false,
+        smtpConfigured: false,
       });
     }
 
-    return NextResponse.json(settings);
+    const githubOAuthConfigured = !!(settings.githubClientId && settings.githubClientSecret);
+    const smtpConfigured = !!(settings.smtpHost && settings.smtpPort && settings.smtpFrom);
+
+    return NextResponse.json({
+      enableEmailVerify: settings.enableEmailVerify,
+      enablePasswordReset: settings.enablePasswordReset,
+      enableTurnstile: settings.enableTurnstile,
+      turnstileSiteKey: settings.turnstileSiteKey,
+      enableGithubOAuth: settings.enableGithubOAuth,
+      githubOAuthConfigured,
+      smtpConfigured,
+    });
   } catch (error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }

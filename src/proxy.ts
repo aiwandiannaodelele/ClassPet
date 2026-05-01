@@ -1,12 +1,19 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth/auth";
 
-export default auth((req) => {
-  const isLoggedIn = !!req.auth;
-  const isAuthPage = req.nextUrl.pathname.startsWith("/login") || req.nextUrl.pathname.startsWith("/register");
+export default async function proxy(req: NextRequest) {
+  const session = await auth();
+  const isLoggedIn = !!session?.user;
+  const isAuthPage =
+    req.nextUrl.pathname.startsWith("/login") ||
+    req.nextUrl.pathname.startsWith("/register") ||
+    req.nextUrl.pathname.startsWith("/forgot-password") ||
+    req.nextUrl.pathname.startsWith("/reset-password");
+  const isSetupPage = req.nextUrl.pathname.startsWith("/setup");
+  const isPublicPage = isAuthPage || isSetupPage;
 
   // Redirect unauthenticated users to login page
-  if (!isLoggedIn && !isAuthPage) {
+  if (!isLoggedIn && !isPublicPage) {
     let from = req.nextUrl.pathname;
     if (req.nextUrl.search) {
       from += req.nextUrl.search;
@@ -22,7 +29,7 @@ export default auth((req) => {
   }
 
   return NextResponse.next();
-});
+}
 
 export const config = {
   matcher: [
