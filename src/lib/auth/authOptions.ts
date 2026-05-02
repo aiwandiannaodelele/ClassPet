@@ -103,11 +103,12 @@ export async function getAuthOptions(): Promise<NextAuthConfig> {
           token.role = (user as any).role || "USER";
         }
 
-        if (token.id && !token.role) {
-          const dbUser = await prisma.user.findUnique({ where: { id: token.id as string } });
-          if (dbUser) {
-            token.role = dbUser.role;
-          }
+        if (token.id && (trigger === "update" || !token.role)) {
+          const dbUser = await prisma.user.findUnique({
+            where: { id: token.id as string },
+            select: { role: true },
+          });
+          if (dbUser?.role) token.role = dbUser.role;
         }
 
         if (trigger === "update" && session) {

@@ -19,7 +19,7 @@ type SetupStatus = {
 
 export default function SetupPage() {
   const router = useRouter();
-  const { data: session, status: sessionStatus } = useSession();
+  const { status: sessionStatus, update } = useSession();
 
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -140,6 +140,7 @@ export default function SetupPage() {
         return;
       }
       toast.success("已设置为超级管理员");
+      await update();
       router.replace("/");
       router.refresh();
     } finally {
