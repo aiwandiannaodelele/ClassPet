@@ -36,8 +36,10 @@ interface ClassPageParams {
 export default async function ClassPage({ params }: ClassPageParams) {
   const { id } = await params;
   
-  // In a real app, you might want to construct the base URL dynamically
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  const headersList = await headers();
+  const host = headersList.get("x-forwarded-host") || headersList.get("host") || "localhost:3000";
+  const proto = headersList.get("x-forwarded-proto") || "http";
+  const baseUrl = `${proto}://${host}`;
 
   const classInfo: Class | null = await fetchData(`${baseUrl}/api/classes/${id}`);
   const students: StudentWithPet[] | null = await fetchData(`${baseUrl}/api/classes/${id}/students`);

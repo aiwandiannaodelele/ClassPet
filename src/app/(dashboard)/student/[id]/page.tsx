@@ -7,10 +7,12 @@ interface StudentDetailPageProps {
 }
 
 async function getStudent(id: string) {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
   try {
     const headersList = await headers();
     const cookieHeader = headersList.get('cookie');
+    const host = headersList.get("x-forwarded-host") || headersList.get("host") || "localhost:3000";
+    const proto = headersList.get("x-forwarded-proto") || "http";
+    const baseUrl = `${proto}://${host}`;
 
     const res = await fetch(`${baseUrl}/api/students/${id}`, { 
       cache: 'no-store',
